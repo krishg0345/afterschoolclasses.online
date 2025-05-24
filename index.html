@@ -5,7 +5,68 @@
     <title>AfterSchoolClasses.online - Learning Made Easy with Mr. Krishna Trivedi</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
+    <style> /* --- QR Code Payment Block Styling --- */
+.payment-qr-code-block {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Center all content within the block */
+    display: flex; /* Use flexbox for vertical alignment */
+    flex-direction: column;
+    align-items: center; /* Center items horizontally within the flex container */
+}
+
+.payment-title {
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.payment-instruction {
+    font-size: 1.2em;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.qr-code-container {
+    border: 2px solid #eee; /* Light border around the QR code */
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9; /* Slightly off-white background */
+    margin-bottom: 20px;
+    max-width: 250px; /* Max width to control image size */
+    width: 100%; /* Make it responsive */
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.05); /* Subtle inner shadow */
+}
+
+.qr-code-image {
+    max-width: 100%; /* Ensures the image scales down if container is smaller */
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Remove extra space below image */
+    margin: 0 auto; /* Center image if it's smaller than max-width */
+}
+
+.qr-code-note {
+    font-size: 0.95em;
+    color: #777;
+    margin-top: 10px;
+    font-style: italic;
+}
+
+/* Responsive adjustments if needed */
+@media (max-width: 600px) {
+    .payment-qr-code-block {
+        padding: 20px;
+    }
+    .payment-title {
+        font-size: 1.5em;
+    }
+    .payment-instruction {
+        font-size: 1em;
+    }
+}
         /* Custom CSS for the Inter font family */
         body {
             font-family: 'Inter', sans-serif;
@@ -143,10 +204,17 @@
                 Ready to make 
 learning easy or explore your career options? <p> <a href="https://docs.google.com/forms/d/1lbuw-9mpKM1_KeQvZC2og0GhxK55oacIS-C5VdIjIzI/edit?chromeless=1" <a href="#offerings" class="inline-block bg-white border-2 border-blue-600 text-blue-600 font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105 hover:bg-blue-50 shadow-lg"> Enroll Now
                 </a>
-<a href="Pay Krish G](upi://pay?pa=krishg0345@okaxis&pn=Krish%20G&cu=INR 500" <a href="#offerings" class="inline-block bg-white border-2 border-blue-600 text-blue-600 font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105 hover:bg-blue-50 shadow-lg"> Pay Now
-                </a>
-
             </p>
+            <div class="payment-qr-code-block">
+    <h3 class="payment-title">To make payment for your desired program:</h3>
+    <p class="payment-instruction">Scan the QR code below</p>
+    <div class="qr-code-container">
+        <img src="WhatsApp Image 2025-05-24 at 8.02.02 PM.jpeg" alt="Scan to Pay via UPI" class="qr-code-image">
+    </div>
+    <p class="qr-code-note">
+        * Works with any UPI app (Google Pay, PhonePe, Paytm, etc.)
+    </p>
+</div>
             <div class="bg-white text-gray-800 p-8 rounded-xl shadow-xl flex flex-col items-center">
                 <p class="text-xl font-semibold mb-4"> Contact Us:</p>
                 <a href="mailto:dream.togetherwe@gmail.com" class="text-blue-600 hover:underline text-lg sm:text-xl font-medium break-all"> dream.togetherwe@gmail.com

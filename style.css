@@ -1,1 +1,150 @@
+/* assets/css/style.css */
 
+/* --- General Body and Font Styling --- */
+body {
+    font-family: 'Inter', sans-serif; /* Ensures consistent font */
+    background-color: #f8fafc; /* Light gray background */
+    color: #334155; /* Dark slate gray text */
+    line-height: 1.6; /* Improved readability */
+}
+
+/* --- Smooth Scrolling for Anchor Links --- */
+html {
+    scroll-behavior: smooth;
+}
+
+/* --- Custom Button Styling for Prominent Look --- */
+.btn-primary {
+    display: inline-block;
+    background-color: #2563eb; /* Tailwind's blue-600 equivalent */
+    color: #ffffff; /* white */
+    font-weight: 700; /* bold */
+    padding: 12px 32px; /* py-3 px-8 */
+    border-radius: 9999px; /* rounded-full */
+    transition: all 0.3s ease-in-out; /* transition duration-300 ease-in-out */
+    transform: scale(1); /* initial transform */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-lg */
+}
+
+.btn-primary:hover {
+    background-color: #1d4ed8; /* blue-700 */
+    transform: scale(1.05); /* hover:scale-105 */
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* hover:shadow-xl */
+}
+
+/* --- Secondary Button Style (e.g., Learn More on hero) --- */
+.btn-secondary {
+    display: inline-block;
+    background-color: #ffffff; /* white */
+    border: 2px solid #2563eb; /* border-2 border-blue-600 */
+    color: #2563eb; /* text-blue-600 */
+    font-weight: 700; /* bold */
+    padding: 12px 32px; /* py-3 px-8 */
+    border-radius: 9999px; /* rounded-full */
+    transition: all 0.3s ease-in-out;
+    transform: scale(1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-lg */
+}
+
+.btn-secondary:hover {
+    background-color: #eff6ff; /* blue-50 */
+    transform: scale(1.05);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* hover:shadow-xl */
+}
+
+
+/* --- Custom Section Padding for Consistent Spacing --- */
+.section-padding {
+    padding-top: 64px; /* py-16 */
+    padding-bottom: 64px; /* py-16 */
+    padding-left: 16px; /* px-4 */
+    padding-right: 16px; /* px-4 */
+}
+@media (min-width: 640px) { /* sm breakpoint */
+    .section-padding {
+        padding-left: 24px; /* sm:px-6 */
+        padding-right: 24px; /* sm:px-6 */
+    }
+}
+@media (min-width: 1024px) { /* lg breakpoint */
+    .section-padding {
+        padding-left: 32px; /* lg:px-8 */
+        padding-right: 32px; /* lg:px-8 */
+    }
+}
+
+
+/* --- Card Hover Effects (for offerings) --- */
+.card-hover-effect {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+.card-hover-effect:hover {
+    transform: translateY(-5px) scale(1.02); /* lift and slightly enlarge */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15); /* stronger shadow */
+}
+
+
+/* --- QR Code Payment Block Styling --- */
+.payment-qr-code-block {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 32px; /* Spacing from elements above */
+}
+
+.payment-title {
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.payment-instruction {
+    font-size: 1.2em;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.qr-code-container {
+    border: 2px solid #eee;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+    max-width: 250px;
+    width: 100%;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
+}
+
+.qr-code-image {
+    text-align: center;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.qr-code-note {
+    font-size: 0.95em;
+    color: #000000;
+    margin-top: 10px;
+    font-style: italic;
+}
+
+/* Responsive adjustments for QR code block */
+@media (max-width: 600px) {
+    .payment-qr-code-block {
+        padding: 20px;
+    }
+    .payment-title {
+        font-size: 1.5em;
+    }
+    .payment-instruction {
+        font-size: 1em;
+    }
+}

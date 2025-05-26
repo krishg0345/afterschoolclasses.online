@@ -1,102 +1,127 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AfterSchoolClasses.online - Learning Made Easy with Mr. Krishna Trivedi</title>
+    <title>AfterSchoolClasses.online - Empowering Learning Beyond School</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style> /* --- QR Code Payment Block Styling --- */
-.payment-qr-code-block {
-    background-color: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    text-align: center; /* Center all content within the block */
-    display: flex; /* Use flexbox for vertical alignment */
-    flex-direction: column;
-    align-items: center; /* Center items horizontally within the flex container */
-}
-
-.payment-title {
-    font-size: 1.8em;
-    color: #333;
-    margin-bottom: 10px;
-    font-weight: 700;
-}
-
-.payment-instruction {
-    font-size: 1.2em;
-    color: #555;
-    margin-bottom: 20px;
-}
-
-.qr-code-container {
-    border: 2px solid #eee; /* Light border around the QR code */
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #f9f9f9; /* Slightly off-white background */
-    margin-bottom: 20px;
-    max-width: 250px; /* Max width to control image size */
-    width: 100%; /* Make it responsive */
-    box-shadow: inset 0 0 5px rgba(0,0,0,0.05); /* Subtle inner shadow */
-}
-
-.qr-code-image {
-    text-align: center;
-    max-width: 100%; /* Ensures the image scales down if container is smaller */
-    height: auto; /* Maintain aspect ratio */
-    display: block; /* Remove extra space below image */
-    margin: 0 auto; /* Center image if it's smaller than max-width */
-}
-
-.qr-code-note {
-    font-size: 0.95em;
-    color: #000000;
-    margin-top: 10px;
-    font-style: italic;
-}
-
-/* Responsive adjustments if needed */
-@media (max-width: 600px) {
-    .payment-qr-code-block {
-        padding: 20px;
-    }
-    .payment-title {
-        font-size: 1.5em;
-    }
-    .payment-instruction {
-        font-size: 1em;
-    }
-}
-        /* Custom CSS for the Inter font family */
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8fafc; /* Light gray background */
-            color: #334155; /* Dark slate gray text */
+            margin: 0;
+            overflow-x: hidden; /* Hide horizontal scrollbar from animations */
+            scroll-behavior: smooth; /* Smooth scrolling for internal links */
         }
-        /* Smooth scrolling for anchor links */
-        html {
-            scroll-behavior: smooth;
+        /* Header styling - original blue gradient */
+        header {
+            background: linear-gradient(to right, #2563eb, #4f46e5); /* Tailwind blue-600 to indigo-700 equivalent */
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            position: relative;
+            z-index: 20;
         }
-        /* Custom button styling for a more prominent look */
-        .btn-primary {
-            @apply inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105 shadow-lg;
+        /* Fixed video background */
+        #background-video {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -100;
+            object-fit: cover;
         }
-        /* Custom section padding for consistent spacing */
+        /* Overlay to darken video for better text readability */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.55); /* Adjust transparency as needed */
+            z-index: -99;
+        }
+        /* Ensures main content is above the overlay and video */
+        .main-content {
+            position: relative;
+            z-index: 10;
+        }
+        /* Section padding */
         .section-padding {
-            @apply py-16 px-4 sm:px-6 lg:px-8;
+            padding-top: 6rem;
+            padding-bottom: 6rem;
+        }
+        /* Button styles */
+        .btn-primary {
+            @apply bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-full transition duration-300 shadow-md;
+        }
+        .btn-secondary {
+            @apply bg-yellow-300 hover:bg-yellow-400 text-gray-800 font-semibold py-3 px-6 rounded-full transition duration-300 shadow-md;
+        }
+        /* Card hover effect */
+        .card-hover-effect {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .card-hover-effect:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        /* Hero section when using a background video */
+        .hero-section-with-video {
+            background-color: transparent;
+            color: white;
+            min-height: 100vh; /* Make hero section full viewport height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7); /* Add text shadow for readability */
+        }
+            }
+        }
+
+        /* Animation classes for sliding in */
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .slide-in-up {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .slide-in-active {
+            opacity: 1;
+            transform: translateX(0) translateY(0);
         }
     </style>
 </head>
 <body>
+
+<div class="overlay"></div>
+<video autoplay loop muted playsinline id="background-video">
+    <source src="assets/videos/1-video.mp4" type="video/mp4">
+    Your browser does not support the video tag. Please visit our YouTube channel for more.
+</video>
+
+<div class="main-content">
     <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-lg">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <a href="#" class="text-2xl md:text-3xl font-extrabold tracking-tight">
+            <a href="index.html" class="text-2xl md:text-3xl font-extrabold tracking-tight">
                 AfterSchoolClasses.<span class="text-yellow-300">online</span>
             </a>
             <div class="hidden md:flex space-x-8">
-                <a href="#about" class="hover:text-yellow-300 transition duration-200">About Founder </a>
-                <a href="#offerings" class="hover:text-yellow-300 transition duration-200">Our Offerings</a>
+                <a href="#programs" class="hover:text-yellow-300 transition duration-200">Our Programs</a>
+                <a href="#testimonials" class="hover:text-yellow-300 transition duration-200">Success Stories</a>
+                <a href="#about" class="hover:text-yellow-300 transition duration-200">About Founder</a>
                 <a href="#contact" class="hover:text-yellow-300 transition duration-200">Contact</a>
             </div>
             <button id="mobile-menu-button" class="md:hidden focus:outline-none">
@@ -106,42 +131,116 @@
             </button>
         </nav>
         <div id="mobile-menu" class="hidden md:hidden bg-blue-800 bg-opacity-95 py-4">
+            <a href="#programs" class="block px-4 py-2 text-white hover:bg-blue-700 transition duration-200">Our Programs</a>
+            <a href="#testimonials" class="block px-4 py-2 text-white hover:bg-blue-700 transition duration-200">Success Stories</a>
             <a href="#about" class="block px-4 py-2 text-white hover:bg-blue-700 transition duration-200">About Mr. Trivedi</a>
-            <a href="#offerings" class="block px-4 py-2 text-white hover:bg-blue-700 transition duration-200">Our Offerings</a>
             <a href="#contact" class="block px-4 py-2 text-white hover:bg-blue-700 transition duration-200">Contact</a>
         </div>
     </header>
 
-    <section class="section-padding bg-gradient-to-br from-blue-50 to-indigo-100 text-center">
-        <div class="max-w-4xl mx-auto">
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
-                Learning Made Easy with <span class="text-blue-600"> Innovation </span>
+    <section class="section-padding text-center relative overflow-hidden hero-section-with-video">
+        <div class="max-w-4xl mx-auto relative z-10 slide-in-up">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
+                Learning made easy with <span class="text-yellow-300">Technology & Innovation</span>
             </h1>
-            <p class="text-lg sm:text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
-                Unlock your potential in Education with expert guidance from a seasoned educator.
-                Bridging concepts with clarity for a brighter academic future.
+            <p class="text-lg sm:text-xl mb-8 max-w-2xl mx-auto">
+                Bridging concepts with clarity for a brighter academic and career future. Discover a new way to learn, grow, and excel.
             </p>
-            <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
-                <a href="#contact" class="btn-primary">
-                   
-                <a href="#offerings" class="inline-block bg-white border-2 border-blue-600 text-blue-600 font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105 hover:bg-blue-50 shadow-lg">
-                    Learn More
+            <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-8">
+                <a href="#programs" class="btn-primary">
+                    Explore Our Programs
+                </a>
+                <a href="https://www.youtube.com/@afterschoolclasses.online" target="_blank" class="btn-secondary">
+                    Visit Our YouTube Channel
                 </a>
             </div>
         </div>
     </section>
 
+    <section id="programs" class="section-padding bg-white text-center">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-10 slide-in-up">Explore Our <span class="text-blue-600">Core Programs</span></h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-blue-50 rounded-xl shadow-lg p-8 flex flex-col items-center card-hover-effect slide-in-up">
+                    <div class="text-blue-600 text-5xl mb-4">💡</div>
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-4">Physics Classes</h3>
+                    <p class="text-gray-700 mb-6 flex-grow">
+                        Comprehensive and easy-to-understand Physics lessons for students of all levels. Master complex topics.
+                    </p>
+                    <a href="physics-classes.html" class="btn-primary">Learn More</a>
+                </div>
+
+                <div class="bg-blue-50 rounded-xl shadow-lg p-8 flex flex-col items-center card-hover-effect slide-in-up" style="transition-delay: 0.1s;">
+                    <div class="text-blue-600 text-5xl mb-4">🧭</div>
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-4">Career Guidance</h3>
+                    <p class="text-gray-700 mb-6 flex-grow">
+                        Personalized mentorship and strategic guidance to help students navigate academic and career paths.
+                    </p>
+                    <a href="career-guidance.html" class="btn-primary">Learn More</a>
+                </div>
+
+                <div class="bg-blue-50 rounded-xl shadow-lg p-8 flex flex-col items-center card-hover-effect slide-in-up" style="transition-delay: 0.2s;">
+                    <div class="text-blue-600 text-5xl mb-4">🚀</div>
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-4">Workshops</h3>
+                    <p class="text-gray-700 mb-6 flex-grow">
+                        Interactive sessions with industry experts and professionals to build essential skills and gain real-world insights.
+                    </p>
+                    <a href="capacity-workshops.html" class="btn-primary">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials" class="section-padding bg-blue-50">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-10 slide-in-up">Hear From Our <span class="text-blue-600">Successful Students</span></h2>
+            <div class="testimonial-carousel">
+                <div class="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center slide-in-right">
+                    <div class="flex-shrink-0 mb-4">
+                        <img src="assets/images/vaishnav-kant-testimonial.jpg"
+                             alt="Vaishnav Kant, student"
+                             class="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-blue-400 shadow-md">
+                    </div>
+                    <div class="flex-grow text-center">
+                        <p class="text-lg italic text-gray-800 mb-4">
+                            "Right from the moment I met Sir, he has been a <strong class="font-semibold text-green-600">constant support</strong> in every aspect—be it Physics or overall career guidance. His guidance became especially <strong class="font-semibold text-purple-600">invaluable</strong> during exam time. The concise notes provided at the beginning of the session laid a <strong class="font-semibold text-green-600">strong foundation</strong>, and the targeted study material and questions he gave closer to the exams were <strong class="font-semibold text-purple-600">incredibly helpful</strong>. I owe a large part of my <strong class="font-semibold text-green-600">success to his mentorship</strong>."
+                        </p>
+                        <p class="font-semibold text-xl text-blue-700">Vaishnav Kant</p>
+                        <p class="text-gray-600 text-base">Class 12th Board Exam 2024–25 | Score: <strong class="font-semibold text-purple-600">97% overall</strong> | <strong class="font-semibold text-purple-600">94 Marks in Physics</strong></p>
+                        <p class="text-gray-600 text-base">From: Auraiya, Etawah</p>
+                    </div>
+                </div>
+                <div class="testimonial-carousel">
+                <div class="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center slide-in-right">
+                    <div class="flex-shrink-0 mb-4">
+                        <img src="assets/images/akanksha-yadav-testimonial.jpg"
+                             alt="Akanksha Yadav, student"
+                             class="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-blue-400 shadow-md">
+                    </div>
+                 
+                        <p class="text-lg italic text-gray-800 mb-4">
+                            "Looking back, I feel truly <strong class="font-semibold text-green-600">lucky</strong> to have had a mentor like Sir during my Class 12 journey. His way of teaching made even the toughest concepts in Physics <strong class="font-semibold text-purple-600">easier to understand</strong>. The book reading sessions and creative numerical solving tasks were something I had never experienced before—they helped me <strong class="font-semibold text-green-600">think differently</strong> and solve numerical in easy way. More than just academics, his <strong class="font-semibold text-green-600">constant encouragement</strong> kept me going, especially during stressful times. My <strong class="font-semibold text-purple-600">success wouldn't have been possible</strong> without his <strong class="font-semibold text-green-600">support and guidance</strong>."
+                        </p>
+                        <p class="font-semibold text-xl text-blue-700">Akanksha Yadav</p>
+                        <p class="text-gray-600 text-base">Class 12th Board Exam 2022–23 | Score: <strong class="font-semibold text-purple-600">91.2% overall</strong></p>
+                        <p class="text-gray-600 text-base">From: Jaswantnagar, Etawah</p>
+                    </div>
+                </div>
+                 </div>
+        </div>
+    </section>
+
     <section id="about" class="section-padding bg-white">
         <div class="max-w-7xl mx-auto md:flex md:items-center md:space-x-12">
-            <div class="md:w-1/3 flex justify-center mb-8 md:mb-0">
+            <div class="md:w-1/3 flex justify-center mb-8 md:mb-0 slide-in-left">
                 <div class="relative w-64 h-64 sm:w-80 sm:h-80 rounded-full overflow-hidden border-4 border-blue-600 shadow-xl">
-                    <img src="https://i.ibb.co/ymZjtQvq/Screenshot-2025-05-23-190513.png"
-                         alt="Mr. Krishna Trivedi"
+                    <img src="assets/images/krishna-trivedi-profile.png"
+                         alt="Mr. Krishna Trivedi, Founder of AfterSchoolClasses.online"
                          class="w-full h-full object-cover">
                 </div>
             </div>
-            <div class="md:w-2/3 text-center md:text-left">
-                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">About Founder </h2>
+            <div class="md:w-2/3 text-center md:text-left slide-in-right">
+                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">About Our Founder </h2>
                 <p class="text-lg text-gray-700 leading-relaxed mb-4">
                     Mr. Krishna Trivedi brings a wealth of knowledge and a unique perspective to teaching Physics.
                     With a solid foundation from <span class="font-semibold text-blue-600">Hindu College, Delhi University</span>,
@@ -158,74 +257,21 @@
         </div>
     </section>
 
-    <section id="offerings" class="section-padding bg-blue-50">
-        <div class="max-w-7xl mx-auto text-center">
-            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-10">Our Offerings</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-                    <div class="text-blue-600 text-5xl mb-4">💡</div>
-                    <h3 class="text-2xl font-semibold text-gray-900 mb-4">Physics Classes</h3>
-                    <p class="text-gray-700 mb-6 flex-grow">
-                        Comprehensive and easy-to-understand Physics lessons for students of all levels.
-                        We break down complex topics into simple, digestible concepts.
-                    </p>
-                    <p class="text-blue-600 font-bold text-3xl mb-4">₹500<span class="text-xl font-normal">/month</span></p>
-                    <a href="#contact" class="btn-primary">Learn More</a>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-                    <div class="text-blue-600 text-5xl mb-4">🧭</div>
-                    <h3 class="text-2xl font-semibold text-gray-900 mb-4">Career Guidance</h3>
-                    <p class="text-gray-700 mb-6 flex-grow">
-                        Personalized mentorship and guidance to help students navigate their academic and career paths.
-                        Make informed decisions about your future.
-                    </p>
-                    <p class="text-blue-600 font-bold text-3xl mb-4">₹200<span class="text-xl font-normal">/month</span></p>
-                    <a href="#contact" class="btn-primary">Get Guidance</a>
-                </div>
-
-                <div class="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-                    <div class="text-blue-600 text-5xl mb-4">🚀</div>
-                    <h3 class="text-2xl font-semibold text-gray-900 mb-4">Capacity Building Workshops</h3>
-                    <p class="text-gray-700 mb-6 flex-grow">
-                        Interactive sessions with industry experts and professionals to build essential skills
-                        and gain real-world insights.
-                    </p>
-                    <p class="text-blue-600 font-bold text-3xl mb-4">₹500<span class="text-xl font-normal">/month</span></p>
-                    <a href="#contact" class="btn-primary">Join Workshop</a>
-                </div>
-            </div>
-        </div>
-</section>
-
     <section id="contact" class="section-padding bg-gradient-to-br from-blue-600 to-indigo-700 text-white">
-        <div class="max-w-3xl mx-auto text-center">
+        <div class="max-w-3xl mx-auto text-center slide-in-up">
             <h2 class="text-3xl sm:text-4xl font-bold mb-6">Get in Touch</h2>
             <p class="text-lg sm:text-xl mb-8">
-                Ready to make 
-learning easy or explore your career options? <p> <a href="https://docs.google.com/forms/d/1lbuw-9mpKM1_KeQvZC2og0GhxK55oacIS-C5VdIjIzI/edit?chromeless=1" <a href="#offerings" class="inline-block bg-white border-2 border-blue-600 text-blue-600 font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105 hover:bg-blue-50 shadow-lg"> Enroll Now
-                </a>
+                Ready to make learning easy or explore your career options? Reach out to us!
             </p>
-            <div class="payment-qr-code-block">
-    <h3 class="payment-title">To make payment for your desired program:</h3>
-    <p class="payment-instruction">Scan the QR code below</p>
-    <div class="qr-code-container">
-        <img src="WhatsApp Image 2025-05-24 at 8.02.02 PM.jpeg" alt="Scan to Pay via UPI" class="qr-code-image">
-    </div>
-    <p class="qr-code-note">
-        * Works with any UPI app (Google Pay, PhonePe, Paytm, etc.)
-    </p>
-</div>
-            <div class="bg-white text-gray-800 p-8 rounded-xl shadow-xl flex flex-col items-center">
-                <p class="text-xl font-semibold mb-4"> Contact Us:</p>
-                <a href="mailto:dream.togetherwe@gmail.com" class="text-blue-600 hover:underline text-lg sm:text-xl font-medium break-all"> dream.togetherwe@gmail.com
-               </p>
-                <a href="tel:+919664104371" class="text-blue-600 hover:underline text-lg sm:text-xl font-medium break-all">+91 9664104371
-                 
-
- <p> <a href="https://wa.me/message/ZLLRTZRGV76IB1" target="_blank"<span class="text-blue-600" > Chat with us on WhatsApp!</a> 
-
-  <p class="text-sm text-gray-600 mt-6">
+            <p>
+                <a href="https://docs.google.com/forms/d/1lbuw-9mpKM1_KeQvZC2og0GhxK55oacIS-C5VdIjIzI/edit?chromeless=1" class="btn-secondary">Enroll Now via Google Form</a>
+            </p>
+            <div class="bg-white text-gray-800 p-8 rounded-xl shadow-xl flex flex-col items-center mt-8">
+                <p class="text-xl font-semibold mb-4"> Contact Us Directly:</p>
+                <p class="mb-2"><a href="mailto:dream.togetherwe@gmail.com" class="text-blue-600 hover:underline text-lg sm:text-xl font-medium break-all">dream.togetherwe@gmail.com</a></p>
+                <p class="mb-2"><a href="tel:+919664104371" class="text-blue-600 hover:underline text-lg sm:text-xl font-medium break-all">+91 9664104371</a></p>
+                <p><a href="https://wa.me/message/ZLLRTZRGV76IB1" target="_blank" class="text-blue-600 hover:underline text-lg sm:text-xl font-medium">Chat with us on WhatsApp!</a></p>
+                <p class="text-sm text-gray-600 mt-6">
                     Currently based in Etawah, Uttar Pradesh, India.
                 </p>
             </div>
@@ -234,30 +280,63 @@ learning easy or explore your career options? <p> <a href="https://docs.google.c
 
     <footer class="bg-gray-800 text-white py-8 text-center">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <p>&copy; 2024 AfterSchoolClasses.online. All rights reserved.</p>
+            <p>© 2024 AfterSchoolClasses.online. All rights reserved.</p>
             <div class="flex justify-center space-x-4 mt-4">
                 <a href="#" class="text-gray-400 hover:text-white transition duration-200">Privacy Policy</a>
                 <a href="#" class="text-gray-400 hover:text-white transition duration-200">Terms of Service</a>
             </div>
         </div>
     </footer>
+</div>
 
-    <script>
-        // JavaScript for mobile menu toggle
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
+<script>
+    // JavaScript for mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
 
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    // Close mobile menu when a link is clicked
+    mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
         });
+    });
 
-        // Close mobile menu when a link is clicked
-        mobileMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-            });
+    // Intersection Observer for Sliding Animations
+    const observerOptions = {
+        root: null, /* relative to the viewport */
+        rootMargin: '0px',
+        threshold: 0.1 /* 10% of the element must be visible */
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('slide-in-active');
+                observer.unobserve(entry.target); /* Stop observing once animated */
+            }
         });
-    </script>
+    }, observerOptions);
+
+    // Apply observer to elements with animation classes
+    document.querySelectorAll('.slide-in-up, .slide-in-left, .slide-in-right').forEach(el => {
+        observer.observe(el);
+    });
+
+    // Adjust Testimonial Carousel scrolling for smooth experience
+    const testimonialCarousel = document.querySelector('.testimonial-carousel');
+    if (testimonialCarousel) {
+        testimonialCarousel.addEventListener('wheel', (e) => {
+            if (e.deltaY !== 0) {
+                e.preventDefault();
+                testimonialCarousel.scrollLeft += e.deltaY;
+            }
+        });
+    }
+
+</script>
 </body>
 </html>
-

@@ -6,7 +6,7 @@
     <title>AfterSchoolClasses.online - Empowering Learning Beyond School</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -27,11 +27,11 @@
             position: fixed;
             right: 0;
             bottom: 0;
-            min-width: 100%;
-            min-height: 100%;
+            min-width: 50%;
+            min-height: 50%;
             width: auto;
             height: auto;
-            z-index: -100;
+            z-index: -50;
             object-fit: cover;
         }
         /* Overlay to darken video for better text readability */
@@ -108,7 +108,7 @@
 
 <div class="overlay"></div>
 <video autoplay loop muted playsinline id="background-video">
-    <source src="1-video.mp4" type="video/mp4">
+    <source src="assets/videos/1-video.mp4" type="video/mp4">
     Your browser does not support the video tag. Please visit our YouTube channel for more.
 </video>
 
@@ -143,14 +143,15 @@
             <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
                 Learning made easy with <span class="text-yellow-300">Technology & Innovation</span>
             </h1>
-            <p class="text-lg sm:text-xl mb-8 max-w-2xl mx-auto">
-                Bridging concepts with clarity for a brighter academic and career future. Discover a new way to learn, grow, and excel.
+            <p class="text-lg sm:text-xl mb-8 max-w-2x2 mx-auto"> <span class="font-semibold text-white"> 
+                Bridging concepts with clarity for a brighter academic and career future. Discover a new way to learn, grow, and excel.</span>
             </p>
             <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-8">
                 <a href="#programs" class="btn-primary">
                     Explore Our Programs
-                </a>
-                <a href="https://www.youtube.com/@afterschoolclasses.online" target="_blank" class="btn-secondary">
+                </a>         
+ <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-8">
+                <a href="https://www.youtube.com/@afterschoolclasses.online" target="_blue" class="btn-primary"">
                     Visit Our YouTube Channel
                 </a>
             </div>
@@ -188,57 +189,91 @@
                     <a href="capacity-workshops.html" class="btn-primary">Learn More</a>
                 </div>
             </div>
-        </div>
+        
     </section>
 
     <section id="testimonials" class="section-padding bg-blue-50">
-        <div class="max-w-7xl mx-auto text-center">
-            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-10 slide-in-up">Hear From Our <span class="text-blue-600">Successful Students</span></h2>
-            <div class="testimonial-carousel">
-                <div class="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center slide-in-right">
-                    <div class="flex-shrink-0 mb-4">
-                        <img src="vaishnav-kant-testimonial.jpg"
-                             alt="Vaishnav Kant, student"
-                             class="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-blue-400 shadow-md">
-                    </div>
-                    <div class="flex-grow text-center">
-                        <p class="text-lg italic text-gray-800 mb-4">
-                            "Right from the moment I met Sir, he has been a <strong class="font-semibold text-green-600">constant support</strong> in every aspect—be it Physics or overall career guidance. His guidance became especially <strong class="font-semibold text-purple-600">invaluable</strong> during exam time. The concise notes provided at the beginning of the session laid a <strong class="font-semibold text-green-600">strong foundation</strong>, and the targeted study material and questions he gave closer to the exams were <strong class="font-semibold text-purple-600">incredibly helpful</strong>. I owe a large part of my <strong class="font-semibold text-green-600">success to his mentorship</strong>."
-                        </p>
-                        <p class="font-semibold text-xl text-blue-700">Vaishnav Kant</p>
-                        <p class="text-gray-600 text-base">Class 12th Board Exam 2024–25 | Score: <strong class="font-semibold text-purple-600">97% overall</strong> | <strong class="font-semibold text-purple-600">94 Marks in Physics</strong></p>
-                        <p class="text-gray-600 text-base">From: Auraiya, Etawah</p>
-                    </div>
-            </div>
-                </div>
-            </section>
-    <section id="testimonials" class="section-padding bg-blue-50">
-        <div class="max-w-7xl mx-auto text-center">
-                <div class="testimonial-carousel">
-                <div class="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center slide-in-right">
-                    <div class="flex-shrink-0 mb-4">
-                        <img src="akanksha-yadav-testimonial.jpg"
-                             alt="Akanksha Yadav, student"
-                             class="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-blue-400 shadow-md">
-                    </div>
-                 
-                        <p class="text-lg italic text-gray-800 mb-4">
-                            "Looking back, I feel truly <strong class="font-semibold text-green-600">lucky</strong> to have had a mentor like Sir during my Class 12 journey. His way of teaching made even the toughest concepts in Physics <strong class="font-semibold text-purple-600">easier to understand</strong>. The book reading sessions and creative numerical solving tasks were something I had never experienced before—they helped me <strong class="font-semibold text-green-600">think differently</strong> and solve numerical in easy way. More than just academics, his <strong class="font-semibold text-green-600">constant encouragement</strong> kept me going, especially during stressful times. My <strong class="font-semibold text-purple-600">success wouldn't have been possible</strong> without his <strong class="font-semibold text-green-600">support and guidance</strong>."
-                        </p>
-                        <p class="font-semibold text-xl text-blue-700">Akanksha Yadav</p>
-                        <p class="text-gray-600 text-base">Class 12th Board Exam 2022–23 | Score: <strong class="font-semibold text-purple-600">91.2% overall</strong></p>
-                        <p class="text-gray-600 text-base">From: Jaswantnagar, Etawah</p>
-                    </div>
-                </div>
-                 </div>
+  <div class="max-w-7xl mx-auto text-center">
+    <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-10 slide-in-up">
+      Hear From Our <span class="text-blue-600">Successful Students</span>
+    </h2><section class="section-padding bg-blue-50"> 
+        <div class="max-w-7xl mx-auto text-center"> 
+            <div class="testimonial-carousel"> 
+                <div class="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center slide-in-right"> 
+                    <div class="flex-shrink-0 mb-4"> 
+                        <img src="swapnil.jpeg" 
+                             alt="Swapnil Trivedi, student" 
+                             class="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-blue-400 shadow-md"> 
+                    </div> 
+                    <div class="flex-grow text-center"> 
+                        <p class="text-lg italic text-gray-800 mb-4"> 
+                            "Your guidance and support played a crucial role in shaping my career. I was <strong class="font-semibold text-green-600" >connected with the right set of mentors</strong> who gave me timely advice and helped me cut through the overwhelming noise around the CAT exam and interview preparation. The <strong class="font-semibold text-purple-600"> structured resources, workshops, and consistent support provided much-needed clarity and confidence</strong>, ultimately helping me secure a strong position in my career journey."
+                        </p> 
+                        <p class="font-semibold text-xl text-blue-700">Swapnil Trivedi</p> 
+                        <p class="text-Purple-600 text-base"> <strong class="font-semibold text-purple-600"> PGP at IIM Kozhikode | CAT'23 99.6%ile </strong></p>
+                        <p class="text-gray-600 text-base">From: Etawah, Uttar Pradesh</p>
+                    </div> 
+                </div> 
+            </div> 
+        </div> 
+    </section>
+
+    <div class="testimonial-carousel">
+      <!-- Testimonial 1 -->
+      <div class="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center slide-in-right">
+        <div class="flex-shrink-0 mb-4">
+          <img src="assets/images/vaishnav-kant-testimonial.jpg"
+               alt="Vaishnav Kant, student"
+               class="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-blue-400 shadow-md">
         </div>
+        <div class="flex-grow text-center">
+          <p class="text-lg italic text-gray-800 mb-4">
+            "Right from the moment I met Sir, he has been a 
+            <strong class="font-semibold text-green-600">constant support</strong> in every aspect—be it Physics or overall career guidance. His guidance became especially 
+            <strong class="font-semibold text-purple-600">invaluable</strong> during exam time. The concise notes provided at the beginning of the session laid a 
+            <strong class="font-semibold text-green-600">strong foundation</strong>, and the targeted study material and questions he gave closer to the exams were 
+            <strong class="font-semibold text-purple-600">incredibly helpful</strong>. I owe a large part of my 
+            <strong class="font-semibold text-green-600">success to his mentorship</strong>."
+          </p>
+          <p class="font-semibold text-xl text-blue-700">Vaishnav Kant</p>
+          <p class="text-gray-600 text-base">Class 12th Board Exam 2024–25 | Score: <strong class="font-semibold text-purple-600">97% overall</strong> | <strong class="font-semibold text-purple-600">94 Marks in Physics</strong></p>
+          <p class="text-gray-600 text-base">From: Auraiya, Etawah</p>
+        </div>
+      </div>
+ </div>
+ </section>
+      <!-- Testimonial 2 -->
+      <div class="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center slide-in-right">
+        <div class="flex-shrink-0 mb-4">
+          <img src="assets/images/akanksha-yadav-testimonial.jpg"
+               alt="Akanksha Yadav, student"
+               class="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-blue-400 shadow-md">
+        </div>
+        <div class="flex-grow text-center">
+          <p class="text-lg italic text-gray-800 mb-4">
+            "Looking back, I feel truly <strong class="font-semibold text-green-600">lucky</strong> to have had a mentor like Sir during my Class 12 journey. His way of teaching made even the toughest concepts in Physics 
+            <strong class="font-semibold text-purple-600">easier to understand</strong>. The book reading sessions and creative numerical solving tasks were something I had never experienced before—they helped me 
+            <strong class="font-semibold text-green-600">think differently</strong> and solve numerical in easy way. More than just academics, his 
+            <strong class="font-semibold text-green-600">constant encouragement</strong> kept me going, especially during stressful times. My 
+            <strong class="font-semibold text-purple-600">success wouldn't have been possible</strong> without his 
+            <strong class="font-semibold text-green-600">support and guidance</strong>."
+          </p>
+          <p class="font-semibold text-xl text-blue-700">Akanksha Yadav</p>
+          <p class="text-gray-600 text-base">Class 12th Board Exam 2022–23 | Score: <strong class="font-semibold text-purple-600">91.2% overall</strong></p>
+          <p class="text-gray-600 text-base">From: Jaswantnagar, Etawah</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
     </section>
 
     <section id="about" class="section-padding bg-white">
         <div class="max-w-7xl mx-auto md:flex md:items-center md:space-x-12">
             <div class="md:w-1/3 flex justify-center mb-8 md:mb-0 slide-in-left">
                 <div class="relative w-64 h-64 sm:w-80 sm:h-80 rounded-full overflow-hidden border-4 border-blue-600 shadow-xl">
-                    <img src="krishna-trivedi-profile.png"
+                    <img src="assets/images/krishna-trivedi-profile.png"
                          alt="Mr. Krishna Trivedi, Founder of AfterSchoolClasses.online"
                          class="w-full h-full object-cover">
                 </div>
@@ -247,13 +282,13 @@
                 <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">About Our Founder </h2>
                 <p class="text-lg text-gray-700 leading-relaxed mb-4">
                     Mr. Krishna Trivedi brings a wealth of knowledge and a unique perspective to teaching Physics.
-                    With a solid foundation from <span class="font-semibold text-blue-600">Hindu College, Delhi University</span>,
+                    With a solid foundation from <span class="font-semibold text-blue-600">Hindu College, Delhi University</span>, and <span class="font-semibold text-blue-600"> Kanpur University</span>
                     he has dedicated <span class="font-semibold text-blue-600">5 years to teaching</span>, making complex concepts
                     understandable and engaging for students.
                 </p>
                 <p class="text-lg text-gray-700 leading-relaxed">
                     His professional journey includes valuable experience as a <span class="font-semibold text-blue-600">Former Byjus and Internshala professional</span>,
-                    where he honed his skills in delivering effective and impactful educational content.
+                    where he honed his skills in delivering effective and impactful educational content.As the <span class="font-semibold text-blue-600"> Founder of Together We-Dream </span>, an initiative that connects professionals with students for career guidance, Mr. Trivedi has mentored over <span class="font-semibold text-blue-600"> 7,000 students </span>. Currently serving as a <span class="font-semibold text-blue-600"> PGT Physics </span> in CBSE affiliated School, he is passionate about fostering a deep understanding of Physics and guiding students towards academic excellence and beyond.
                     Mr. Trivedi is passionate about fostering a deep understanding of Physics and guiding students
                     towards academic excellence and beyond.
                 </p>

@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AfterSchoolClasses.online - Empowering Learning Beyond School</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            overflow-x: hidden; /* Hide horizontal scrollbar from animations */
+            scroll-behavior: smooth; /* Smooth scrolling for internal links */
+        }
+        /* Header styling - original blue gradient */
+        header {
+            background: linear-gradient(to right, #2563eb, #4f46e5); /* Tailwind blue-600 to indigo-700 equivalent */
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            position: relative;
+            z-index: 20;
+        }
+        /* Fixed video background */
+        #background-video {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -100;
+            object-fit: cover;
+        }
+        /* Overlay to darken video for better text readability */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.55); /* Adjust transparency as needed */
+            z-index: -99;
+        }
+        /* Ensures main content is above the overlay and video */
+        .main-content {
+            position: relative;
+            z-index: 10;
+        }
+        /* Section padding */
+        .section-padding {
+            padding-top: 6rem;
+            padding-bottom: 6rem;
+        }
+        /* Button styles */
+        .btn-primary {
+            @apply bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-full transition duration-300 shadow-md;
+        }
+        .btn-secondary {
+            /* Modified for better harmony with the blue theme */
+            @apply bg-blue-100 hover:bg-blue-200 text-blue-800 font-semibold py-3 px-6 rounded-full transition duration-300 shadow-md border border-blue-300;
+        }
+        /* Card hover effect */
+        .card-hover-effect {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .card-hover-effect:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        /* Hero section when using a background video */
+        .hero-section-with-video {
+            background-color: transparent;
+            color: white;
+            min-height: 100vh; /* Make hero section full viewport height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7); /* Add text shadow for readability */
+        }
+        /* Animation classes for sliding in */
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .slide-in-up {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .slide-in-active {
+            opacity: 1;
+            transform: translateX(0) translateY(0);
+        }
+
+        /* Styles from Teacher Arrangement Web Tool */
+        .teacher-tool-body-styles {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #374151;
+        }
+        .teacher-tool-card {
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
+            border: 1px solid #e5e7eb; /* border border-gray-200 */
+        }
+        .teacher-tool-input-field {
+            border-radius: 0.5rem; /* rounded-lg */
+            border: 1px solid #a5b4fc; /* border-indigo-300 */
+            padding: 0.75rem 1.25rem; /* px-5 py-3 */
+            font-size: 1.125rem; /* text-lg */
+            transition: all 0.2s ease-in-out;
+        }
+        .teacher-tool-input-field:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.5); /* focus:ring-2 focus:ring-indigo-500 */
+            border-color: transparent; /* focus:border-transparent */
+        }
+        .teacher-tool-btn-primary {
+            border-radius: 0.5rem; /* rounded-lg */
+            padding: 0.75rem 1.25rem; /* py-3 */
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 600; /* font-semibold */
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
+        }
+        .teacher-tool-btn-primary:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+<div class="overlay"></div>
+<video autoplay loop muted playsinline id="background-video">
+    <source src="1-video.mp4" type="video/mp4">
+    Your browser does not support the video tag. Please visit our YouTube channel for more.
+</video>
+
+<div class="main-content">
+    <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-lg">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <a href="#home" class="text-2xl md:text-3xl font-extrabold tracking-tight" id="home-link">
+                AfterSchoolClasses.<span class="text-yellow-300">online</span>
+            </a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="hover:text-yellow-300 transition duration-200 nav-link">Home</a>
+                <a href="#programs" class="hover:text-yellow-300 transition duration-200 nav-link">Our Programs</a>
+                <a href="#testimonials" class="hover:text-yellow-300 transition duration-200 nav-link">Success Stories</a>
+                <a href="#about" class="hover:text-yellow-300 transition duration-200 nav-link">About Founder</a>
+                <a href="#contact" class="hover:text-yellow-300 transition duration-200 nav-link">Contact</a>
+                <a href="#teacher-arrangement-tool-section" class="hover:text-yellow-300 transition duration-200 nav-link">School Web Tool</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-blue-800 bg-opacity-95 py-4">
+            <a href="#home" class="block px-4 py-2 text-white hover:bg-blue-700 transition duration-200 nav-link">Home</a>
+            <a href="#programs" class="block px-4 py-2 text-white hover:bg-blue-700 transition duration-200 nav-link">Our Programs</a>
+            <a href="#testimonials" class="block px-4 py-2 text-white hover:bg-blue-700 transition duration-200 nav-link">Success Stories</a>
+            <a href="#about" class="block px-4 py-2 text-white hover:bg-blue-700 transition duration-200 nav-link">About Mr. Trivedi</a>
+            <a href="#contact" class="block px-4 py-2 text-white hover:bg-blue-700 transition duration-200 nav-link">Contact</a>
+            <a href="#teacher-arrangement-tool-section" class="block px-4 py-2 text-white hover:bg-blue-700 transition duration-200 nav-link">School Web Tool</a>
+        </div>
+    </header>
+
+    <section id="home" class="section-padding text-center relative overflow-hidden hero-section-with-video">
+        <div class="max-w-4xl mx-auto relative z-10 slide-in-up">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
+                Learning made easy with <span class="text-yellow-300">Technology & Innovation</span>
+            </h1>
+            <p class="text-lg sm:text-xl mb-8 max-w-2xl mx-auto">
+                Bridging concepts with clarity for a brighter academic and career future. Discover a new way to learn, grow, and excel.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-8">
+                <a href="#programs" class="btn-primary section-scroll-link">
+                    Explore Our Programs
+                </a>
+                <a href="#contact" class="btn-primary section-scroll-link">
+                    Contact Now
+                </a>
+                 <a href="https://www.youtube.com/@afterschoolclasses.online" target="_blank" rel="noopener noreferrer" class="btn-primary">
+                    Visit Our YouTube Channel
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="programs" class="section-padding bg-white text-center">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-10 slide-in-up">Explore Our <span class="text-blue-600">Core Programs</span></h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-blue-50 rounded-xl shadow-lg p-8 flex flex-col items-center card-hover-effect slide-in-up">
+                    <div class="text-blue-600 text-5xl mb-4">💡</div>
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-4">Physics Classes</h3>
+                    <p class="text-gray-700 mb-6 flex-grow">
+                        Comprehensive and easy-to-understand Physics lessons for students of all levels. Master complex topics.
+                    </p>
+                    <a href="physics-classes.html" class="btn-primary">Learn More</a>
+                </div>
+
+                <div class="bg-blue-50 rounded-xl shadow-lg p-8 flex flex-col items-center card-hover-effect slide-in-up" style="transition-delay: 0.1s;">
+                    <div class="text-blue-600 text-5xl mb-4">🧭</div>
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-4">Career Guidance</h3>
+                    <p class="text-gray-700 mb-6 flex-grow">
+                        Personalized mentorship and strategic guidance to help students navigate academic and career paths.
+                    </p>
+                    <a href="career-guidance.html" class="btn-primary">Learn More</a>
+                </div>
+
+                <div class="bg-blue-50 rounded-xl shadow-lg p-8 flex flex-col items-center card-hover-effect slide-in-up" style="transition-delay: 0.2s;">
+                    <div class="text-blue-600 text-5xl mb-4">🚀</div>
+                    <h3 class="text-2xl font-semibold text-gray-900 mb-4">Workshops</h3>
+                    <p class="text-gray-700 mb-6 flex-grow">
+                        Interactive sessions with industry experts and professionals to build essential skills and gain real-world insights.
+                    </p>
+                    <a href="capacity-workshops.html" class="btn-primary">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials" class="section-padding bg-blue-50">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-10 slide-in-up">Hear From Our <span class="text-blue-600">Successful Students</span></h2>
+            <div class="testimonial-carousel flex overflow-x-auto snap-x snap-mandatory pb-4 space-x-4">
+                <!-- Testimonial 1: Vaishnav Kant -->
+                <div class="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 snap-center bg-white rounded-xl shadow-lg p-8 flex flex-col items-center slide-in-right">
+                    <div class="flex-shrink-0 mb-4">
+                        <img src="vaishnav-kant-testimonial.jpg"
+                             alt="Vaishnav Kant, student"
+                             class="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-blue-400 shadow-md">
+                    </div>
+                    <div class="flex-grow text-center">
+                        <p class="text-lg italic text-gray-800 mb-4">
+                            "Right from the moment I met Sir, he has been a <strong class="font-semibold text-green-600">constant support</strong> in every aspect—be it Physics or overall career guidance. His guidance became especially <strong class="font-semibold text-purple-600">invaluable</strong> during exam time. The concise notes provided at the beginning of the session laid a <strong class="font-semibold text-green-600">strong foundation</strong>, and the targeted study material and questions he gave closer to the exams were <strong class="font-semibold text-purple-600">incredibly helpful</strong>. I owe a large part of my <strong class="font-semibold text-green-600">success to his mentorship</strong>."
+                        </p>
+                        <p class="font-semibold text-xl text-blue-700">Vaishnav Kant</p>
+                        <p class="text-gray-600 text-base">Class 12th Board Exam 2024–25 | Score: <strong class="font-semibold text-purple-600">97% overall</strong> | <strong class="font-semibold text-purple-600">94 Marks in Physics</strong></p>
+                        <p class="text-gray-600 text-base">From: Auraiya, Etawah</p>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2: Akanksha Yadav -->
+                <div class="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 snap-center bg-white rounded-xl shadow-lg p-8 flex flex-col items-center slide-in-right">
+                    <div class="flex-shrink-0 mb-4">
+                        <img src="akanksha-yadav-testimonial.jpg"
+                             alt="Akanksha Yadav, student"
+                             class="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-blue-400 shadow-md">
+                    </div>
+                    <div class="flex-grow text-center">
+                        <p class="text-lg italic text-gray-800 mb-4">
+                            "Looking back, I feel truly <strong class="font-semibold text-green-600">lucky</strong> to have had a mentor like Sir during my Class 12 journey. His way of teaching made even the toughest concepts in Physics <strong class="font-semibold text-purple-600">easier to understand</strong>. The book reading sessions and creative numerical solving tasks were something I had never experienced before—they helped me <strong class="font-semibold text-green-600">think differently</strong> and solve numerical in easy way. More than just academics, his <strong class="font-semibold text-green-600">constant encouragement</strong> kept me going, especially during stressful times. My <strong class="font-semibold text-purple-600">success wouldn't have been possible</strong> without his <strong class="font-semibold text-green-600">support and guidance</strong>."
+                        </p>
+                        <p class="font-semibold text-xl text-blue-700">Akanksha Yadav</p>
+                        <p class="text-gray-600 text-base">Class 12th Board Exam 2022–23 | Score: <strong class="font-semibold text-purple-600">91.2% overall</strong></p>
+                        <p class="text-gray-600 text-base">From: Jaswantnagar, Etawah</p>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3: Swapnil Trivedi -->
+                <div class="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 snap-center bg-white rounded-xl shadow-lg p-8 flex flex-col items-center slide-in-right">
+                    <div class="flex-shrink-0 mb-4">
+                        <img src="swapnil.jpeg"
+                             alt="Swapnil Trivedi, student"
+                             class="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-blue-400 shadow-md">
+                    </div>
+                    <div class="flex-grow text-center">
+                        <p class="text-lg italic text-gray-800 mb-4">
+                            "Your guidance and support played a crucial role in shaping my career. I was <strong class="font-semibold text-green-600">connected with the right set of mentors</strong> who gave me timely advice and helped me cut through the overwhelming noise around the CAT exam and interview preparation. The <strong class="font-semibold text-purple-600">structured resources, workshops, and consistent support provided much-needed clarity and confidence</strong>, ultimately helping me secure a strong position in my career journey."
+                        </p>
+                        <p class="font-semibold text-xl text-blue-700">Swapnil Trivedi</p>
+                        <p class="text-purple-600 text-base"> <strong class="font-semibold text-purple-600"> PGP at IIM Kozhikode | CAT'23 99.6%ile </strong></p>
+                        <p class="text-gray-600 text-base">From: Etawah, Uttar Pradesh</p>
+                    </div>
+                </div>
+ <!-- Testimonial 1: Anushikha Mishra -->
+                <div class="flex-shrink-0 w-full sm:w-1/2 md:w-1/3 snap-center bg-white rounded-xl shadow-lg p-8 flex flex-col items-center slide-in-right">
+                    <div class="flex-shrink-0 mb-4">
+                        <img src="Anushikha Mishra.jpg"
+                             alt="Anushikha Mishra, Lawyer"
+                             class="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-blue-400 shadow-md">
+                    </div>
+                    <div class="flex-grow text-center">
+                        <p class="text-lg italic text-gray-800 mb-4">
+                            "I'm forever grateful to Mr. Krishna for his unwavering support and guidance throughout my CLAT 2019 journey. His constant  <strong class="font-semibold text-green-600">mentorship, motivation, and encouragement</strong>  helped me navigate the challenges and stay focused on my goal. His timely  <strong class="font-semibold text-purple-600">invaluable</strong> advice and counsel were instrumental in my success, and I was thrilled to have cleared CLAT and secured a seat at NLUS (National Law University Sonipat). Even after that, Mr. Krishna continued to support me, providing valuable insights and assistance with internships and more. Today, as a <strong class="font-semibold text-green-600">practicing lawyer in the Supreme Court of India, </strong>,  I'm a testament to the impact of his mentorship.</strong>."
+                        </p>
+                        <p class="font-semibold text-xl text-blue-700">Anushikha Mishra</p>
+                        <p class="text-gray-600 text-base"> BA-LLB  | Score: <strong class="font-semibold text-purple-600">NLU Sonipal 2019</strong> | <strong class="font-semibold text-purple-600">Sumpreme Court Lawyer</strong></p>
+                        <p class="text-gray-600 text-base">From: Delhi</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section-padding bg-white">
+        <div class="max-w-7xl mx-auto md:flex md:items-center md:space-x-12">
+            <div class="md:w-1/3 flex justify-center mb-8 md:mb-0 slide-in-left">
+                <div class="relative w-64 h-64 sm:w-80 sm:h-80 rounded-full overflow-hidden border-4 border-blue-600 shadow-xl">
+                    <img src="krishna-trivedi-profile.png"
+                             alt="Mr. Krishna Trivedi, Founder of AfterSchoolClasses.online"
+                             class="w-full h-full object-cover">
+                </div>
+            </div>
+            <div class="md:w-2/3 text-center md:text-left slide-in-right">
+                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">About Our Founder </h2>
+                <p class="text-lg text-gray-700 leading-relaxed mb-4">
+                    Mr. Krishna Trivedi brings a wealth of knowledge and a unique perspective to teaching Physics.
+                    With a solid foundation from <span class="font-semibold text-blue-600">Hindu College, Delhi University</span>, and <span class="font-semibold text-blue-600"> Kanpur University</span>
+                    he has dedicated <span class="font-semibold text-blue-600">5 years to teaching</span>, making complex concepts
+                    understandable and engaging for students.
+                </p>
+                <p class="text-lg text-gray-700 leading-relaxed">
+                    His professional journey includes valuable experience as a <span class="font-semibold text-blue-600">Former Byjus and Internshala professional</span>,
+                    where he honed his skills in delivering effective and impactful educational content. As the <span class="font-semibold text-blue-600"> Founder of Together We-Dream </span>, an initiative that connects professionals with students for career guidance, Mr. Trivedi has mentored over <span class="font-semibold text-blue-600"> 7,000 students </span>. Currently serving as a <span class="font-semibold text-blue-600"> PGT Physics </span> in CBSE affiliated School, he is passionate about fostering a deep understanding of Physics and guiding students
+                    towards academic excellence and beyond.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section-padding bg-gradient-to-br from-blue-600 to-indigo-700 text-white">
+        <div class="max-w-3xl mx-auto text-center slide-in-up">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-6">Get in Touch</h2>
+            <p class="text-lg sm:text-xl mb-8">
+                Ready to make learning easy or explore your career options? Reach out to us!
+            </p>
+            <p>
+                <a href="https://docs.google.com/forms/d/1lbuw-9mpKM1_KeQvZC2og0GhxK55oacIS-C5VdIjIzI/edit?chromeless=1" target="_blank" rel="noopener noreferrer" class="btn-secondary">Enroll Now via Google Form</a>
+            </p>
+            <div class="bg-white text-gray-800 p-8 rounded-xl shadow-xl flex flex-col items-center mt-8">
+                <p class="text-xl font-semibold mb-4"> Contact Us Directly:</p>
+                <p class="mb-2"><a href="mailto:dream.togetherwe@gmail.com" class="text-blue-600 hover:underline text-lg sm:text-xl font-medium break-all">dream.togetherwe@gmail.com</a></p>
+                <p class="mb-2"><a href="tel:+919664104371" class="text-blue-600 hover:underline text-lg sm:text-xl font-medium break-all">+91 9664104371</a></p>
+                <p><a href="https://wa.me/message/ZLLRTZRGV76IB1" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline text-lg sm:text-xl font-medium">Chat with us on WhatsApp!</a></p>
+                <p class="text-sm text-gray-600 mt-6">
+                    Currently based in Etawah, Uttar Pradesh, India.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Teacher Arrangement Web Tool Section -->
+    <section id="teacher-arrangement-tool-section" class="section-padding bg-gray-100 min-h-screen flex items-center justify-center hidden">
+        <div class="container mx-auto p-6 bg-white teacher-tool-card w-full max-w-4xl">
+            <h1 class="text-3xl font-bold text-center text-indigo-700 mb-8">Teacher Arrangement Web Tool</h1>
+
+            <!-- File Upload Section -->
+            <div class="mb-8 p-6 bg-blue-50 rounded-lg border border-blue-200 shadow-sm">
+                <label for="csvFileInput" class="block text-xl font-medium text-blue-800 mb-3">
+                    Upload your Timetable CSV File:
+                </label>
+                <input type="file" id="csvFileInput" accept=".csv"
+                       class="w-full teacher-tool-input-field file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200">
+                <p id="fileStatus" class="mt-2 text-blue-700 text-sm"></p>
+            </div>
+
+            <!-- Input Section -->
+            <div class="mb-8 p-6 bg-indigo-50 rounded-lg border border-indigo-200 shadow-sm">
+                <label for="absentTeacherInput" class="block text-xl font-medium text-indigo-800 mb-3">
+                    Enter Absent Teacher's Name:
+                </label>
+                <input type="text" id="absentTeacherInput" placeholder="e.g., Anjil"
+                       class="w-full teacher-tool-input-field placeholder-gray-400 mb-4">
+
+                <label for="daySelect" class="block text-xl font-medium text-indigo-800 mb-3">
+                    Select Day:
+                </label>
+                <select id="daySelect" class="w-full teacher-tool-input-field mb-4">
+                    <option value="">All Days</option>
+                    <option value="monday">Monday</option>
+                    <option value="tuesday">Tuesday</option>
+                    <option value="wednesday">Wednesday</option>
+                    <option value="thursday">Thursday</option>
+                    <option value="friday">Friday</option>
+                    <option value="saturday">Saturday</option>
+                </select>
+
+                <button id="findArrangementButton"
+                        class="mt-6 w-full bg-indigo-600 text-white teacher-tool-btn-primary">
+                    Find Arrangements
+                </button>
+            </div>
+
+            <!-- Absent Teacher Schedule Section -->
+            <div id="absentTeacherSchedule" class="mb-8 p-6 bg-red-50 rounded-lg border border-red-200 shadow-sm hidden">
+                <h2 class="text-2xl font-semibold text-red-800 mb-4">Absent Teacher's Schedule: <span id="absentTeacherNameDisplay" class="text-red-600"></span></h2>
+                <div id="absentScheduleContent" class="space-y-3">
+                    <!-- Schedule details will be loaded here -->
+                </div>
+                <p id="noAbsentSchedule" class="text-red-700 text-lg mt-3 hidden">This teacher has no scheduled classes or is not found in the timetable.</p>
+            </div>
+
+            <!-- Suggested Arrangements Section -->
+            <div id="suggestedArrangements" class="p-6 bg-green-50 rounded-lg border border-green-200 shadow-sm hidden">
+                <h2 class="text-2xl font-semibold text-green-800 mb-4">Suggested Arrangements:</h2>
+                <div id="arrangementsContent" class="space-y-4">
+                    <!-- Arrangement suggestions will be loaded here -->
+                </div>
+                <p id="noArrangementsFound" class="text-green-700 text-lg mt-3 hidden">No arrangements needed or no free teachers found for the periods.</p>
+            </div>
+
+            <!-- Custom Modal for Messages (e.g., for multi-match teacher selection) -->
+            <div id="messageModal" class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center hidden z-50">
+                <div class="bg-white p-8 rounded-lg shadow-xl max-w-sm w-full mx-4 border border-gray-300">
+                    <h3 id="modalTitle" class="text-xl font-semibold text-gray-800 mb-4"></h3>
+                    <div id="modalMessage" class="text-gray-700 mb-6 space-y-2"></div>
+                    <button id="modalCloseButton" class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-300 ease-in-out font-medium">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 text-white py-8 text-center">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <p>© 2024 AfterSchoolClasses.online. All rights reserved.</p>
+            <div class="flex justify-center space-x-4 mt-4">
+                <a href="#" class="text-gray-400 hover:text-white transition duration-200">Privacy Policy</a>
+                <a href="#" class="text-gray-400 hover:text-white transition duration-200">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script>
+    // JavaScript for mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const navLinks = document.querySelectorAll('.nav-link'); // Select all navigation links
+    const homeLink = document.getElementById('home-link'); // Select home link
+    const sectionScrollLinks = document.querySelectorAll('.section-scroll-link'); // Select new section scroll links
+
+    // All main content sections (excluding header, footer, and video/overlay)
+    const allContentSections = [
+        document.getElementById('home'),
+        document.getElementById('programs'),
+        document.getElementById('testimonials'),
+        document.getElementById('about'),
+        document.getElementById('contact'),
+        document.getElementById('teacher-arrangement-tool-section')
+    ];
+
+    // Function to show a specific section and hide others
+    function showSection(sectionToShowId) {
+        console.log(`Debug: showSection called for ID: ${sectionToShowId}`);
+        allContentSections.forEach(section => {
+            if (section) { // Check if section exists
+                if (section.id === sectionToShowId) {
+                    section.classList.remove('hidden');
+                    // Only add 'flex' for the tool section, as it uses flex for centering its content
+                    if (section.id === 'teacher-arrangement-tool-section') {
+                        section.classList.add('flex');
+                    } else {
+                        section.classList.remove('flex'); // Ensure other sections don't get flex unless needed
+                    }
+
+                    if (section.id === 'home') {
+                        document.querySelector('.overlay').classList.remove('hidden');
+                        document.getElementById('background-video').classList.remove('hidden');
+                    } else {
+                        document.querySelector('.overlay').classList.add('hidden');
+                        document.getElementById('background-video').classList.add('hidden');
+                    }
+                } else {
+                    section.classList.add('hidden');
+                    section.classList.remove('flex'); // Always remove flex if hiding
+                }
+            }
+        });
+        // Scroll to top of the shown section, but only if it's not the home section (which is full viewport)
+        const sectionToShow = document.getElementById(sectionToShowId);
+        if (sectionToShow && sectionToShowId !== 'home') {
+             sectionToShow.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else if (sectionToShowId === 'home') {
+            window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top for home
+        }
+    }
+
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    // Handle navigation clicks for both desktop and mobile
+    navLinks.forEach(link => {
+        link.addEventListener('click', (event) => {
+            console.log(`Debug: Nav link clicked. Link href: ${link.getAttribute('href')}`);
+            event.preventDefault(); // Prevent default anchor jump
+            const targetId = link.getAttribute('href').substring(1); // Get section ID from href
+            console.log(`Debug: Target section ID: ${targetId}`);
+            showSection(targetId);
+            if (!mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden'); // Close mobile menu after selection
+            }
+        });
+    });
+
+    // Handle section scroll links (e.g., buttons on home page)
+    sectionScrollLinks.forEach(link => {
+        link.addEventListener('click', (event) => {
+            console.log(`Debug: Section scroll link clicked. Link href: ${link.getAttribute('href')}`);
+            event.preventDefault(); // Prevent default anchor jump
+            const targetId = link.getAttribute('href').substring(1); // Get section ID from href
+            console.log(`Debug: Target section ID: ${targetId}`);
+            showSection(targetId);
+        });
+    });
+
+    // Handle home link click
+    homeLink.addEventListener('click', (event) => {
+        console.log(`Debug: Home link clicked.`);
+        event.preventDefault();
+        showSection('home');
+    });
+
+    // Initial load: show home section
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log("Debug: DOMContentLoaded fired. Initializing website sections.");
+        console.log("Debug: All content sections identified:", allContentSections.map(s => s ? s.id : 'null'));
+        showSection('home');
+    });
+
+
+    // Intersection Observer for Sliding Animations
+    const observerOptions = {
+        root: null, /* relative to the viewport */
+        rootMargin: '0px',
+        threshold: 0.1 /* 10% of the element must be visible */
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('slide-in-active');
+                observer.unobserve(entry.target); /* Stop observing once animated */
+            }
+        });
+    }, observerOptions);
+
+    // Apply observer to elements with animation classes
+    document.querySelectorAll('.slide-in-up, .slide-in-left, .slide-in-right').forEach(el => {
+        observer.observe(el);
+    });
+
+    // Adjust Testimonial Carousel scrolling for smooth experience
+    const testimonialCarousel = document.querySelector('.testimonial-carousel');
+    if (testimonialCarousel) {
+        testimonialCarousel.addEventListener('wheel', (event) => {
+            event.preventDefault(); // Prevent vertical scrolling
+            testimonialCarousel.scrollLeft += event.deltaY;
+        });
+    }
+
+
+    // START OF TEACHER ARRANGEMENT TOOL JAVASCRIPT
+
+    let timetableData = []; // Stores the processed timetable data
+    let allTeachers = [];   // Stores unique teacher names (original casing)
+    let teacherLevelsCache = {}; // Stores teaching levels for each teacher
+    let teacherPeriodCounts = {}; // Stores total periods for each teacher
+
+    const PERIOD_THRESHOLD_FOR_HIGH_WORKLOAD = 36; // Teachers with >= 36 periods are high workload
+
+    // Mapping classes/grades to teaching levels (expanded for more robustness)
+    const class_to_level_map = {
+        'lkg': 'Pre-primary', 'buds': 'Pre-primary', 'bloom': 'Pre-primary', 'blossom': 'Pre-primary',
+        'i': 'Pre-primary', 'ii': 'Pre-primary', 'grade 1': 'Pre-primary', 'grade 2': 'Pre-primary',
+        'iii': 'Primary', 'iv': 'Primary', 'v': 'Primary', 'grade 3': 'Primary', 'grade 4': 'Primary', 'grade 5': 'Primary',
+        'vi': 'TGT', 'vii': 'TGT', 'viii': 'TGT', 'grade 6': 'TGT', 'grade 7': 'TGT', 'grade 8': 'TGT',
+        'ix': 'Secondary', 'x': 'Secondary', 'grade 9': 'Secondary', 'grade 10': 'Secondary',
+        'xi': 'PGT', 'xii': 'PGT', 'grade 11': 'PGT', 'grade 12': 'PGT'
+    };
+
+    // Re-select DOM Elements for the Teacher Tool (scoped to the tool's section or using unique IDs)
+    // IMPORTANT: Ensure these IDs are unique across the entire index.html
+    const csvFileInput = document.getElementById('csvFileInput');
+    const fileStatus = document.getElementById('fileStatus');
+    const absentTeacherInput = document.getElementById('absentTeacherInput');
+    const daySelect = document.getElementById('daySelect');
+    const findArrangementButton = document.getElementById('findArrangementButton');
+    const absentTeacherScheduleDiv = document.getElementById('absentTeacherSchedule');
+    const absentTeacherNameDisplay = document.getElementById('absentTeacherNameDisplay');
+    const absentScheduleContent = document.getElementById('absentScheduleContent');
+    const noAbsentSchedule = document.getElementById('noAbsentSchedule');
+    const suggestedArrangementsDiv = document.getElementById('suggestedArrangements');
+    const arrangementsContent = document.getElementById('arrangementsContent');
+    const noArrangementsFound = document.getElementById('noArrangementsFound');
+    const messageModal = document.getElementById('messageModal'); // Re-declare to use locally
+    const modalTitle = document.getElementById('modalTitle');     // Re-declare to use locally
+    const modalMessage = document.getElementById('modalMessage'); // Re-declare to use locally
+    const modalCloseButton = document.getElementById('modalCloseButton'); // Re-declare to use locally
+
+    // Tool Version for debugging
+    const TOOL_VERSION = "1.0.7"; // Updated version for modal overlay fix
+
+    /**
+     * Displays a custom modal message (for tool-specific messages).
+     * This reuses the main website's modal.
+     * @param {string} title - The title of the modal.
+     * @param {string|HTMLElement} message - The message to display. Can be plain text or an HTML element.
+     * @param {boolean} showInput - Whether to show an input field for selection (e.g., for multiple teachers).
+     * @param {function} onSubmit - Callback for input submission if showInput is true.
+     */
+    function showModalForTool(title, message, showInput = false, onSubmit = null) {
+        modalTitle.textContent = title;
+        modalMessage.innerHTML = ''; // Clear previous content
+        if (typeof message === 'string') {
+            modalMessage.textContent = message;
+        } else {
+            modalMessage.appendChild(message); // Append HTML element
+        }
+
+        // Remove previous input/button if any that were specifically added by the tool's modal logic
+        let oldInput = document.getElementById('modalInput');
+        if (oldInput) oldInput.remove();
+        let oldSubmitBtn = document.getElementById('modalSubmitButton');
+        if (oldSubmitBtn) oldSubmitBtn.remove();
+
+        if (showInput && onSubmit) {
+            const inputElement = document.createElement('input');
+            inputElement.type = 'number';
+            inputElement.id = 'modalInput';
+            inputElement.placeholder = 'Enter number';
+            inputElement.className = 'w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-4';
+            modalMessage.appendChild(inputElement);
+
+            const submitButton = document.createElement('button');
+            submitButton.id = 'modalSubmitButton';
+            submitButton.textContent = 'Select';
+            submitButton.className = 'w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300 ease-in-out font-medium';
+            submitButton.onclick = () => {
+                onSubmit(inputElement.value);
+            };
+            modalMessage.appendChild(submitButton);
+            setTimeout(() => inputElement.focus(), 100);
+            modalCloseButton.textContent = "Cancel"; // Change for selection modal
+        } else {
+             modalCloseButton.textContent = "Close"; // Revert for simple messages
+        }
+        messageModal.classList.remove('hidden');
+    }
+
+    /**
+     * Hides the custom modal (for tool-specific messages).
+     * This reuses the main website's modal.
+     */
+    function hideModalForTool() {
+        messageModal.classList.add('hidden');
+    }
+
+    // Event listener for the modal close button (re-added as it might be affected by prior context)
+    modalCloseButton.addEventListener('click', hideModalForTool);
+
+    // Event listener to close modal when clicking outside the content box
+    messageModal.addEventListener('click', (event) => {
+        // Check if the click occurred directly on the modal backdrop (not on its children)
+        if (event.target === messageModal) {
+            hideModalForTool();
+        }
+    });
+
+    /**
+     * Clears the display sections of the tool.
+     */
+    function clearDisplaysForTool() {
+        absentTeacherScheduleDiv.classList.add('hidden');
+        suggestedArrangementsDiv.classList.add('hidden');
+        absentScheduleContent.innerHTML = '';
+        arrangementsContent.innerHTML = '';
+        noAbsentSchedule.classList.add('hidden');
+        noArrangementsFound.classList.add('hidden');
+    }
+
+    /**
+     * Determines the teaching level from a given class name.
+     * Also identifies if it's a merged class.
+     * @param {string} class_name - The name of the class (e.g., "IX Venus", "XI (Mars+Jupiter)").
+     * @returns {Object} An object { level: string, isMerged: boolean }.
+     */
+    function getLevelAndMergedStatusFromClassName(class_name) {
+        let level = 'Unknown';
+        let isMerged = false;
+
+        if (!class_name) {
+            return { level: 'Unknown', isMerged: false };
+        }
+
+        const lowerCaseClassName = class_name.toLowerCase();
+
+        // Check for merged class pattern first (e.g., "xi (mars+jupiter)")
+        if (/\b(xi|xii)\s*\(.+\)/.test(lowerCaseClassName)) {
+            isMerged = true;
+        }
+        
+        // Extract the main class part (e.g., "IX", "XII", "LKG", "III", "Grade 1")
+        const match = lowerCaseClassName.match(/([a-zA-Z]+\s*\d*|\d+)\s*(.*)/); // Adjusted regex for "Grade 1"
+        if (match) {
+            const mainClassPart = match[1].trim(); // Get the primary part
+            level = class_to_level_map[mainClassPart] || 'Unknown';
+        }
+        return { level: level, isMerged: isMerged };
+    }
+
+    /**
+     * Calculates and caches the set of teaching levels each teacher is associated with.
+     * @param {Array<Object>} data - The processed timetable data.
+     */
+    function calculateTeacherLevels(data) {
+        teacherLevelsCache = {};
+        const uniqueTeachers = [...new Set(data.map(entry => entry.teacher))];
+
+        uniqueTeachers.forEach(teacher => {
+            const classesTaught = [...new Set(data.filter(entry => entry.teacher === teacher).map(entry => entry.class))];
+            const levelsTaught = new Set();
+            classesTaught.forEach(className => {
+                if (className.toLowerCase() === 'free' || !className.trim()) {
+                    return;
+                }
+                const { level } = getLevelAndMergedStatusFromClassName(className); // Use the new function
+                if (level !== 'Unknown') {
+                    levelsTaught.add(level);
+                }
+            });
+            teacherLevelsCache[teacher.toLowerCase()] = levelsTaught;
+        });
+        console.log("Debug: Teacher Levels Cache:", teacherLevelsCache); // Debug log
+    }
+
+    /**
+     * Calculates the total number of non-free periods for each teacher.
+     * @param {Array<Object>} data - The processed timetable data.
+     */
+    function calculateTeacherPeriodCounts(data) {
+        teacherPeriodCounts = {};
+        const uniqueTeachers = [...new Set(data.map(entry => entry.teacher))];
+
+        uniqueTeachers.forEach(teacher => {
+            const nonFreePeriods = data.filter(entry =>
+                entry.teacher === teacher &&
+                entry.class.toLowerCase() !== 'free' &&
+                entry.class.trim() !== ''
+            );
+            teacherPeriodCounts[teacher.toLowerCase()] = nonFreePeriods.length;
+        });
+        console.log("Debug: Teacher Period Counts:", teacherPeriodCounts); // Debug log
+    }
+
+    /**
+     * Parses CSV text into the required long format timetable data.
+     * Handles wide-format CSVs with 'name' and 'day [period X]' columns.
+     * @param {string} csvText - The raw CSV content.
+     * @returns {Array<Object>} Processed timetable data.
+     */
+    function parseCSV(csvText) {
+        const lines = csvText.trim().split('\n');
+        if (lines.length < 2) { // Need at least header and one data row
+            throw new Error("CSV file is empty or too short.");
+        }
+
+        const headers = lines[0].split(',').map(header => header.trim().toLowerCase());
+        const df_raw_data = [];
+
+        for (let i = 1; i < lines.length; i++) {
+            const line = lines[i];
+            console.log(`Debug: Processing CSV line: '${line}'`); // New debug log
+            const values = line.split(','); // Simple split by comma
+            console.log(`Debug: Line values after split (raw): [${values.map(v => `'${v}'`).join(', ')}]`); // New debug log
+
+            if (values.length !== headers.length) {
+                console.warn(`Skipping malformed row due to mismatched column count: ${line}`);
+                continue; // Skip this row, don't return null
+            }
+            const row = {};
+            headers.forEach((header, j) => {
+                row[header] = values[j] ? values[j].trim() : ''; // Trim values
+            });
+            df_raw_data.push(row);
+            console.log("Debug: Processed row (after trimming):", row); // New debug log
+        }
+
+        if (df_raw_data.length === 0) {
+            throw new Error("No valid data rows found after parsing.");
+        }
+
+        // Simulate pandas DataFrame from raw data
+        const df_raw = {
+            columns: headers,
+            data: df_raw_data,
+            // Simple method to access data similar to df['column_name']
+            getColumn: function(colName) {
+                return this.data.map(row => row[colName]);
+            },
+            filterRows: function(predicate) {
+                return this.data.filter(predicate);
+            },
+            unique: function(colName) {
+                return [...new Set(this.getColumn(colName))];
+            }
+        };
+
+        if (!df_raw.columns.includes('name')) {
+            throw new Error("The CSV file must contain a 'name' column for teachers.");
+        }
+        const teacher_column = 'name';
+
+        const dayPeriodColumns = df_raw.columns.filter(col =>
+            /^(monday|tuesday|wednesday|thursday|friday|saturday)\s*\[period\s*\d+\]/.test(col)
+        );
+
+        if (dayPeriodColumns.length === 0) {
+            throw new Error("Could not find any 'day [period X]' columns in the CSV.");
+        }
+
+        const processedData = [];
+        df_raw.data.forEach(row => {
+            const teacherName = row[teacher_column];
+            dayPeriodColumns.forEach(colName => {
+                let classSubject = row[colName]; // classSubject is already trimmed from previous step
+                
+                console.log(`Debug: Raw CSV cell content for teacher '${teacherName}', col '${colName}': '${classSubject}'`);
+
+
+                // Extract day and period from column name
+                const dayMatch = colName.match(/^(monday|tuesday|wednesday|thursday|friday|saturday)/);
+                const periodMatch = colName.match(/\[period\s*(\d+)\]/);
+
+                const day = dayMatch ? dayMatch[0] : null;
+                const period = periodMatch ? parseInt(periodMatch[1], 10) : null;
+
+                if (day && period !== null) {
+                    let className, subjectName;
+                    if (!classSubject || classSubject.toLowerCase() === 'free') {
+                        className = 'Free';
+                        subjectName = '';
+                    } else {
+                        const parts = classSubject.split('-').map(p => p.trim());
+                        className = parts[0];
+                        subjectName = parts.length > 1 ? parts.slice(1).join(' - ') : '';
+                    }
+                    processedData.push({
+                        teacher: teacherName,
+                        day: day,
+                        period: period,
+                        class: className,
+                        subject: subjectName
+                    });
+                }
+            });
+        });
+
+        // Re-simulate unique teachers from processedData for consistency
+        allTeachers = [...new Set(processedData.map(entry => entry.teacher))];
+        calculateTeacherLevels(processedData); // Recalculate levels for newly parsed data
+        calculateTeacherPeriodCounts(processedData); // Calculate period counts
+
+        console.log("Debug: Parsed timetableData (after processing):", processedData); // Debug log
+        console.log("Debug: All Teachers:", allTeachers); // Debug log
+
+        return processedData;
+    }
+
+    // Event Listener for CSV File Input
+    csvFileInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (!file) {
+            fileStatus.textContent = "No file selected.";
+            return;
+        }
+
+        if (file.type !== 'text/csv') {
+            showModalForTool("Invalid File Type", "Please upload a CSV file (.csv).");
+            fileStatus.textContent = "Please upload a CSV file.";
+            return;
+        }
+
+        fileStatus.textContent = `Loading ${file.name}... (v${TOOL_VERSION})`;
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            try {
+                const csvText = e.target.result;
+                timetableData = parseCSV(csvText); // Update global timetableData
+
+                if (timetableData.length === 0) {
+                    showModalForTool("Empty or Invalid CSV", "The uploaded CSV file is empty or could not be parsed correctly. Ensure it has headers and data.");
+                    fileStatus.textContent = `Failed to load CSV. (v${TOOL_VERSION})`;
+                    return;
+                }
+                
+                fileStatus.textContent = `Successfully loaded ${timetableData.length} timetable entries from ${file.name}. (v${TOOL_VERSION})`;
+                showModalForTool("Success!", `Timetable loaded from "${file.name}". You can now search for absent teachers. (Tool Version: ${TOOL_VERSION})`);
+                clearDisplaysForTool(); // Clear any previous search results
+            } catch (error) {
+                console.error("Error parsing CSV:", error);
+                showModalForTool("CSV Parsing Error", `An error occurred while parsing the CSV file: ${error.message}. Please ensure it is well-formed and matches the expected format.`);
+                fileStatus.textContent = `Failed to parse CSV. (v${TOOL_VERSION})`;
+                timetableData = [];
+                allTeachers = [];
+            }
+        };
+
+        reader.onerror = () => {
+            showModalForTool("File Read Error", "Failed to read the file. Please try again.");
+            fileStatus.textContent = `File read error. (v${TOOL_VERSION})`;
+            timetableData = [];
+            allTeachers = [];
+        };
+
+        reader.readAsText(file);
+    });
+
+    // Event Listener for Find Arrangements Button
+    findArrangementButton.addEventListener('click', () => {
+        clearDisplaysForTool();
+
+        if (timetableData.length === 0) {
+            showModalForTool("No Timetable Data", "Please upload a CSV timetable file first.");
+            return;
+        }
+
+        const absentTeacherInputVal = absentTeacherInput.value.trim();
+        const selectedDay = daySelect.value.toLowerCase(); // Get selected day from dropdown
+
+        if (!absentTeacherInputVal) {
+            showModalForTool("Input Required", "Please enter the name of the absent teacher.");
+            return;
+        }
+
+        // Find matching teachers using partial, case-insensitive search
+        const matchingTeachers = allTeachers.filter(originalName =>
+            originalName.toLowerCase().includes(absentTeacherInputVal.toLowerCase())
+        );
+
+        let selectedTeacherName = null;
+
+        if (matchingTeachers.length === 0) {
+            showModalForTool("Teacher Not Found", `"${absentTeacherInputVal}" is not found in the loaded timetable. Please check the spelling or ensure the teacher is in your CSV.`);
+            return;
+        } else if (matchingTeachers.length === 1) {
+            selectedTeacherName = matchingTeachers[0];
+            processArrangements(selectedTeacherName, selectedDay); // Pass selected day
+        } else {
+            // Display options in modal and wait for user selection
+            const choicesList = document.createElement('div');
+            choicesList.className = 'space-y-1';
+            matchingTeachers.forEach((teacher, i) => {
+                const p = document.createElement('p');
+                p.textContent = `${i + 1}. ${teacher}`;
+                choicesList.appendChild(p);
+            });
+
+            showModalForTool("Multiple Teachers Found", choicesList, true, (choice) => {
+                const choiceIndex = parseInt(choice, 10) - 1;
+                if (!isNaN(choiceIndex) && choiceIndex >= 0 && choiceIndex < matchingTeachers.length) {
+                    selectedTeacherName = matchingTeachers[choiceIndex];
+                    hideModalForTool();
+                    processArrangements(selectedTeacherName, selectedDay); // Pass selected day
+                } else {
+                    // Re-show modal with error or keep current one
+                    showModalForTool("Invalid Selection", "Please enter a valid number from the list.", true, (c) => {
+                        // Re-submit logic
+                        const reChoiceIndex = parseInt(c, 10) - 1;
+                        if (!isNaN(reChoiceIndex) && reChoiceIndex >= 0 && reChoiceIndex < matchingTeachers.length) {
+                            selectedTeacherName = matchingTeachers[reChoiceIndex];
+                            hideModalForTool();
+                            processArrangements(selectedTeacherName, selectedDay); // Pass selected day
+                        } else {
+                            modalMessage.innerHTML += '<p class="text-red-500 text-sm mt-1">Invalid number. Try again.</p>';
+                        }
+                    });
+                    // Also, re-append choicesList to the messageModal if it was cleared
+                    if (modalMessage.childElementCount === 0 || !modalMessage.querySelector('.space-y-1')) {
+                       modalMessage.prepend(choicesList); // Re-add the list of choices
+                    }
+                }
+            });
+        }
+    });
+
+    /**
+     * Main function to process and display arrangements.
+     * @param {string} selectedTeacherName - The exact name of the selected absent teacher.
+     * @param {string} filterDay - Optional: day to filter the schedule by ('monday', 'tuesday', etc. or empty for all days).
+     */
+    function processArrangements(selectedTeacherName, filterDay = '') {
+        console.log("Debug: Processing arrangements for:", selectedTeacherName, "on day:", filterDay);
+
+        clearDisplaysForTool(); // Clear displays before showing new results
+
+        let absentTeacherSchedule = timetableData.filter(entry =>
+            entry.teacher.toLowerCase() === selectedTeacherName.toLowerCase()
+        );
+
+        // Apply day filter if a specific day is selected
+        if (filterDay && filterDay !== "") {
+            absentTeacherSchedule = absentTeacherSchedule.filter(entry =>
+                entry.day.toLowerCase() === filterDay
+            );
+        }
+
+        absentTeacherSchedule.sort((a, b) => {
+            const daysOrder = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+            const dayA = daysOrder.indexOf(a.day.toLowerCase());
+            const dayB = daysOrder.indexOf(b.day.toLowerCase());
+            if (dayA !== dayB) return dayA - dayB;
+            return a.period - b.period;
+        });
+
+        absentTeacherNameDisplay.textContent = selectedTeacherName;
+        absentTeacherScheduleDiv.classList.remove('hidden');
+
+        if (absentTeacherSchedule.length === 0) {
+            noAbsentSchedule.classList.remove('hidden');
+            suggestedArrangementsDiv.classList.remove('hidden'); // Show arrangements section even if no periods
+            noArrangementsFound.classList.remove('hidden');
+            console.log("Debug: No schedule found for selected teacher/day combination.");
+            return;
+        } else {
+            noAbsentSchedule.classList.add('hidden');
+        }
+
+        absentScheduleContent.innerHTML = absentTeacherSchedule.map(entry => {
+            const classDisplay = entry.class;
+            const subjectDisplay = entry.subject ? `, Subject: ${entry.subject}` : "";
+            const periodDescription = (classDisplay.toLowerCase() === 'free') ? "(Free Period)" : `Class ${classDisplay}${subjectDisplay}`;
+            return `
+                <p class="bg-red-100 p-3 rounded-md border border-red-300 text-red-800">
+                    <span class="font-semibold">${entry.day.charAt(0).toUpperCase() + entry.day.slice(1)}, Period ${entry.period}:</span> ${periodDescription}
+                </p>
+            `;
+        }).join('');
+
+        suggestedArrangementsDiv.classList.remove('hidden');
+        let arrangementsMade = false;
+        arrangementsContent.innerHTML = ''; // Clear previous arrangements
+
+        absentTeacherSchedule.forEach(scheduledPeriod => {
+            const day = scheduledPeriod.day;
+            const period = scheduledPeriod.period;
+            const className = scheduledPeriod.class;
+            const subjectName = scheduledPeriod.subject;
+
+            console.log(`Debug: Processing ${day.charAt(0).toUpperCase() + day.slice(1)}, Period ${period} for class: '${className}'`);
+
+            // If the absent teacher's period is 'Free', no arrangement is needed
+            if (className.toLowerCase() === 'free' || !className.trim()) {
+                arrangementsContent.innerHTML += `
+                    <div class="bg-gray-100 p-4 rounded-md border border-gray-300">
+                        <p class="font-semibold text-gray-800 text-lg mb-1">
+                            ${day.charAt(0).toUpperCase() + day.slice(1)}, Period ${period} (Free for ${selectedTeacherName}):
+                        </p>
+                        <p class="text-gray-700">No arrangement needed.</p>
+                    </div>
+                `;
+                return; // Skip to the next period
+            }
+
+            const subjectInfoForDisplay = subjectName ? ` - ${subjectName}` : "";
+            const { level: requiredLevel, isMerged: isClassMerged } = getLevelAndMergedStatusFromClassName(className);
+            console.log(`Debug: Required level for class '${className}': ${requiredLevel}, Is Merged: ${isClassMerged}`);
+
+            // Find all teachers currently occupied (not 'Free') in this period
+            const occupiedTeachersInPeriod = timetableData.filter(entry =>
+                entry.day.toLowerCase() === day.toLowerCase() &&
+                entry.period === period &&
+                entry.class.toLowerCase() !== 'free'
+            ).map(entry => entry.teacher.toLowerCase());
+            console.log(`Debug: Occupied teachers in period (${day}, ${period}):`, occupiedTeachersInPeriod);
+
+
+            // Get all genuinely free teachers for this day and period (excluding the absent teacher)
+            const allGenuinelyFreeTeachersForPeriod = allTeachers.filter(teacher =>
+                !occupiedTeachersInPeriod.includes(teacher.toLowerCase()) &&
+                teacher.toLowerCase() !== selectedTeacherName.toLowerCase()
+            );
+            console.log(`Debug: All genuinely free teachers for period (${day}, ${period}):`, allGenuinelyFreeTeachersForPeriod);
+
+
+            const sameLevelTeachersPreferred = []; // Same Level, Preferred Workload
+            const sameLevelTeachersHighWorkload = []; // Same Level, High Workload
+            const otherLevelTeachersPreferred = []; // Other Levels, Preferred Workload
+            const otherLevelTeachersHighWorkload = []; // Other Levels, High Workload
+
+            if (requiredLevel !== 'Unknown') {
+                allGenuinelyFreeTeachersForPeriod.forEach(freeTeacher => {
+                    const teacherLower = freeTeacher.toLowerCase();
+                    const teacherLevels = teacherLevelsCache[teacherLower] || new Set();
+                    const periodsCount = teacherPeriodCounts[teacherLower] || 0; // Get period count
+
+                    if (teacherLevels.has(requiredLevel)) {
+                        if (periodsCount < PERIOD_THRESHOLD_FOR_HIGH_WORKLOAD) {
+                            sameLevelTeachersPreferred.push(freeTeacher);
+                        } else {
+                            sameLevelTeachersHighWorkload.push(freeTeacher);
+                        }
+                    } else {
+                        if (periodsCount < PERIOD_THRESHOLD_FOR_HIGH_WORKLOAD) {
+                            otherLevelTeachersPreferred.push(freeTeacher);
+                        } else {
+                            otherLevelTeachersHighWorkload.push(freeTeacher);
+                        }
+                    }
+                });
+            } else {
+                // If required class level is unknown, categorize all free teachers by workload
+                allGenuinelyFreeTeachersForPeriod.forEach(freeTeacher => {
+                    const periodsCount = teacherPeriodCounts[freeTeacher.toLowerCase()] || 0;
+                    if (periodsCount < PERIOD_THRESHOLD_FOR_HIGH_WORKLOAD) {
+                        otherLevelTeachersPreferred.push(freeTeacher);
+                    } else {
+                        otherLevelTeachersHighWorkload.push(freeTeacher);
+                    }
+                });
+            }
+            console.log(`Debug: Same level preferred teachers:`, sameLevelTeachersPreferred);
+            console.log(`Debug: Same level high workload teachers:`, sameLevelTeachersHighWorkload);
+            console.log(`Debug: Other (Preferred) teachers:`, otherLevelTeachersPreferred);
+            console.log(`Debug: Other (High Workload) teachers:`, otherLevelTeachersHighWorkload);
+
+
+            let displayFreeTeachersParts = [];
+            if (sameLevelTeachersPreferred.length > 0) {
+                displayFreeTeachersParts.push(`Same Level (${requiredLevel}, Preferred Workload): ` + sameLevelTeachersPreferred.sort().join(', '));
+            }
+            if (sameLevelTeachersHighWorkload.length > 0) {
+                displayFreeTeachersParts.push(`Same Level (${requiredLevel}, High Workload): ` + sameLevelTeachersHighWorkload.sort().join(', '));
+            }
+            if (otherLevelTeachersPreferred.length > 0) {
+                displayFreeTeachersParts.push("Other Levels (Preferred Workload): " + otherLevelTeachersPreferred.sort().join(', '));
+            }
+            if (otherLevelTeachersHighWorkload.length > 0) {
+                displayFreeTeachersParts.push("Other Levels (High Workload): " + otherLevelTeachersHighWorkload.sort().join(', '));
+            }
+            console.log(`Debug: Display parts:`, displayFreeTeachersParts);
+
+
+            const arrangementCard = document.createElement('div');
+            arrangementCard.classList.add('bg-green-100', 'p-4', 'rounded-md', 'border', 'border-green-300');
+
+            if (displayFreeTeachersParts.length > 0) {
+                arrangementsMade = true;
+                arrangementCard.innerHTML = `
+                    <p class="font-semibold text-green-800 text-lg mb-2">
+                        ${day.charAt(0).toUpperCase() + day.slice(1)}, Period ${period} (${className}${subjectInfoForDisplay}):
+                    </p>
+                    <p class="text-green-700">
+                        Available Teachers: ${displayFreeTeachersParts.join('; ')}
+                    </p>
+                `;
+            } else {
+                arrangementCard.innerHTML = `
+                    <p class="font-semibold text-orange-800 text-lg mb-2">
+                        ${day.charAt(0).toUpperCase() + day.slice(1)}, Period ${period} (${className}${subjectInfoForDisplay}):
+                        </p>
+                    <p class="text-orange-700">
+                        No free teachers found for this period.
+                    </p>
+                `;
+            }
+            arrangementsContent.appendChild(arrangementCard);
+        });
+
+        if (!arrangementsMade && absentTeacherSchedule.filter(p => p.class.toLowerCase() !== 'free').length > 0) {
+            noArrangementsFound.classList.remove('hidden');
+        } else {
+            noArrangementsFound.classList.add('hidden');
+        }
+    }
+    // END OF TEACHER ARRANGEMENT TOOL JAVASCRIPT
+
+</script>
+</body>
+</html>

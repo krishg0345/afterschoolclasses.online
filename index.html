@@ -1191,10 +1191,206 @@
         }
     }
     // END OF TEACHER ARRANGEMENT TOOL JAVASCRIPT
+    
+    <!-- ----- SMART FutureMeter ----- -->
+<section id="open-ed-tech-ai" class="py-14 bg-gradient-to-br from-blue-100 via-purple-50 to-blue-50">
+  <div class="max-w-7xl mx-auto px-4">
+    <h2 class="text-4xl font-bold text-center text-blue-800 mb-2">AI & Open Resource Student Analyzer</h2>
+    <p class="text-xl text-center text-gray-700 mb-8">Powered by CBSE, NCERT, DIKSHA, NROER, Bharat Skills, SWAYAM, & AI</p>
+    
+    <div class="mx-auto max-w-2xl bg-white rounded-xl shadow-lg p-8 mb-10">
+      <form id="studentProfileForm" class="grid gap-4">
+        <div>
+          <label class="block text-gray-700 font-semibold mb-1">Name</label>
+          <input required name="name" class="w-full border p-2 rounded" maxlength="80"/>
+        </div>
+        <div>
+          <label class="block text-gray-700 font-semibold mb-1">Age (in years)</label>
+          <input required type="number" min="5" max="25" name="age" class="w-full border p-2 rounded"/>
+        </div>
+        <div>
+          <label class="block text-gray-700 font-semibold mb-1">Class/Grade</label>
+          <select required name="grade" class="w-full border p-2 rounded">
+            <option value="">Select</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+            <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+            <option>11</option><option>12</option>
+          </select>
+        </div>
+        <button class="bg-blue-700 hover:bg-blue-800 text-white py-3 rounded-lg font-bold text-xl" type="submit">Start Screening Test ➔</button>
+      </form>
+    </div>
+
+    <div id="aiTestBox" class="hidden max-w-3xl mx-auto mt-12 mb-8 bg-white shadow-md rounded-xl p-8">
+      <h3 class="text-2xl font-bold text-purple-700 mb-2">⚡ Fundamental Numeracy & Literacy Test</h3>
+      <p class="mb-4 text-gray-600 text-sm">Adaptive questions from AI + CBSE/NCERT banks (Hindi & English)</p>
+      <form id="fundamentalTestForm" class="space-y-6"></form>
+    </div>
+
+    <div id="reportCard" class="hidden mt-16 mb-6 max-w-4xl mx-auto p-8 bg-gradient-to-r from-pink-50 to-blue-50 border border-blue-200 rounded-2xl shadow-xl">
+      <h3 class="text-2xl font-bold text-green-700 mb-6 text-center">🚩 Personalized Learning Report & SWOT</h3>
+      <div class="mb-6 grid md:grid-cols-3 gap-6">
+        <div>
+          <div class="text-xl font-semibold text-blue-900 mb-2">Strengths</div>
+          <ul id="swotStrengths" class="ml-4 list-disc text-green-700"></ul>
+        </div>
+        <div>
+          <div class="text-xl font-semibold text-red-700 mb-2">Weaknesses</div>
+          <ul id="swotWeaknesses" class="ml-4 list-disc text-red-600"></ul>
+        </div>
+        <div>
+          <div class="text-xl font-semibold text-yellow-600 mb-2">Opportunities/Threats</div>
+          <ul id="swotOpportunities" class="ml-4 list-disc text-yellow-700"></ul>
+        </div>
+      </div>
+      <div>
+        <h4 class="text-lg font-semibold text-blue-700 mb-2">Recommended Resources:</h4>
+        <div id="aiResourceLinks" class="space-y-2"></div>
+      </div>
+      <div class="text-right mt-6">
+        <button onclick="window.print()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+          🖨️ Download/Print Report
+        </button>
+      </div>
+    </div>
+      
+    <div class="mt-10">
+      <h4 class="text-xl font-semibold mb-2">🌐 Explore India's Best Open Source Student Tools</h4>
+      <ul class="list-disc ml-6 text-blue-800">
+        <li><a href="https://www.cbse.gov.in/cbsenew/e-resources.html" target="_blank" class="underline">CBSE E-Resources</a></li>
+        <li><a href="https://cbseacademic.nic.in/" target="_blank" class="underline">CBSE Academic Portal</a></li>
+        <li><a href="https://diksha.gov.in" target="_blank" class="underline">DIKSHA (NCERT Video + Tests)</a></li>
+        <li><a href="http://epathshala.nic.in" target="_blank" class="underline">e-Pathshala (NCERT Books All Languages)</a></li>
+        <li><a href="https://swayam.gov.in" target="_blank" class="underline">SWAYAM & SWAYAM Prabha</a></li>
+        <li><a href="https://nroer.gov.in" target="_blank" class="underline">NROER (Open Education Content)</a></li>
+        <li><a href="https://ndl.iitkgp.ac.in" target="_blank" class="underline">NDLI (National Digital Library)</a></li>
+        <li><a href="https://www.skillindiadigital.gov.in" target="_blank" class="underline">Skill India Digital Hub</a></li>
+        <li><a href="https://bharatskills.gov.in" target="_blank" class="underline">Bharat Skills (Vocational)</a></li>
+        <li><a href="https://www.youtube.com/channel/UCG7qv69PhtZlwDzB2vTWzKQ/videos" target="_blank" class="underline">CBSE Official YouTube</a></li>
+        <li><a href="https://www.swayamprabha.gov.in/" target="_blank" class="underline">SWAYAM Prabha (DTH Channels)</a></li>
+      </ul>
+    </div>
+  </div>
+  <script>
+    // --- Fundamental AI Open-Source Adaptive Test ---
+    const numeracyQ = [
+      {q:"Write the number that comes after 49.", a:"50"},
+      {q:"Add: 17 + 28 = ?", a:"45"},
+      {q:"What is 1/2 of 20?", a:"10"},
+      {q:"Subtract 15 from 54.", a:"39"},
+      {q:"How many sides does a triangle have?", a:"3"},
+      {q:"Write the number name for 74.", a:"seventy-four"},
+      {q:"Round 97 to the nearest ten.", a:"100"}
+    ];
+    const literacyEngQ = [
+      {q:"[English] Fill in the blank: The sun ___ in the east.",a:"rises"},
+      {q:"[English] Opposite of 'Dark' is ___?",a:"light"},
+      {q:"[English] Choose correct spelling: (a) bekus (b) because (c) becaus",a:"because"},
+      {q:"[English] What is the plural of 'child'?",a:"children"},
+      {q:"[English] Make a sentence with 'book'.",a:"OPEN"}
+    ];
+    const literacyHinQ = [
+      {q:"[Hindi] [translate:‘पानी’ शब्द का अंग्रेजी अर्थ लिखिए।]",a:"water"},
+      {q:"[Hindi] [translate:‘पहाड़’ शब्द का विलोम (opposite) क्या है?]",a:"मैदान"},
+      {q:"[Hindi] [translate:निम्नलिखित वाक्य को अंग्रेजी में लिखें: ‘मैं स्कूल जा रहा हूँ।’]",a:"I am going to school."},
+      {q:"[Hindi] [translate:‘किताब’ शब्द से वाक्य बनाएं।]",a:"OPEN"}
+    ];
+
+    function pickRandom(arr, n) {
+      const out = [];
+      let temp = [...arr];
+      for(let i=0; i<n; i++) {
+        if(temp.length===0) temp=[...arr];
+        const idx = Math.floor(Math.random()*temp.length);
+        out.push(temp[idx]);
+        temp.splice(idx,1);
+      }
+      return out;
+    }
+
+    // Grade-based test config
+    function getTestConfig(grade) {
+      if ([1,2,3,4,5].includes(+grade)) {
+        return {num:3, eng:2, hin:2};
+      }
+      if ([6,7,8].includes(+grade)) {
+        return {num:4, eng:3, hin:2};
+      }
+      return {num:5, eng:4, hin:3};
+    }
+
+    document.getElementById('studentProfileForm').onsubmit = function(e){
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(this));
+      document.getElementById('aiTestBox').classList.remove('hidden');
+      document.getElementById('aiTestBox').scrollIntoView({behavior:'smooth'});
+      generateFundamentalTest(data.grade,data.name);
+    };
+
+    function generateFundamentalTest(grade, name){
+      document.getElementById('fundamentalTestForm').innerHTML="";
+      const cfg = getTestConfig(grade);
+      const questions = [
+        ...pickRandom(numeracyQ,cfg.num),
+        ...pickRandom(literacyEngQ,cfg.eng),
+        ...pickRandom(literacyHinQ,cfg.hin)
+      ];
+      let html="";
+      questions.forEach((q,i)=>{
+        html+=`<div class="mb-6">
+          <label class="text-lg block mb-2 font-medium">${i+1}. ${q.q.replace('[translate:','').replace(']','')}</label>
+          <input required name="q${i}" data-answer="${q.a}" class="w-full border p-2 rounded"/>
+        </div>`;
+      });
+      html+=`<button type="submit" class="bg-purple-600 text-white px-8 py-3 rounded-lg mt-4 hover:bg-purple-700">Submit Test</button>`;
+      document.getElementById('fundamentalTestForm').innerHTML=html;
+      document.getElementById('fundamentalTestForm').onsubmit=function(ev){
+        ev.preventDefault();
+        analyzeFundamentalTest(questions, new FormData(this), name);
+      };
+    }
+
+    function analyzeFundamentalTest(questions, ansData, name){
+      let right=0;
+      let wrong=0;
+      let weakAreas=[];
+      let strongAreas=[];
+      let openAnswers=0;
+      questions.forEach((q,idx)=>{
+        let ans = ansData.get(`q${idx}`).trim().toLowerCase();
+        if(q.a==='OPEN'){openAnswers++;return;}
+        if(ans===q.a.trim().toLowerCase()){right++;strongAreas.push(q.q);}
+        else{wrong++;weakAreas.push(q.q);}
+      });
+
+      // SWOT
+      document.getElementById('reportCard').classList.remove('hidden');
+      document.getElementById('swotStrengths').innerHTML=`<li>Numeracy Score: ${(right/questions.length*100).toFixed(0)}%</li>
+        ${strongAreas.map(s=>`<li>${s.slice(0,60)}...</li>`).join('')}`;
+      document.getElementById('swotWeaknesses').innerHTML=wrong>0?
+        `<li>Needs focus on: ${weakAreas.length>0?weakAreas.map(s=>s.slice(0,50)).join('...'):''}</li>` : `<li>No major weaknesses!</li>`;
+      document.getElementById('swotOpportunities').innerHTML=`<li>Practice open questions (Writing/Thinking).<li>Explore extra content on DIKSHA/ePathshala for improvement</li>`;
+
+      // Resource links (AI suggests best open resources per grade)
+      let links = [
+        `<a href="https://diksha.gov.in/explore/class${ansData.get('grade')}" target="_blank" class="text-blue-700 underline">DIKSHA Content for Class ${ansData.get('grade')}</a>`,
+        `<a href="https://cbseacademic.nic.in/" target="_blank" class="text-blue-700 underline">CBSE Academics & Competency Questions</a>`,
+        `<a href="https://nroer.gov.in" target="_blank" class="text-blue-700 underline">NROER Open Content</a>`,
+        `<a href="https://www.skillindiadigital.gov.in/" target="_blank" class="text-blue-700 underline">Skill India Digital Hub</a>`
+      ];
+      document.getElementById('aiResourceLinks').innerHTML=links.join('<br>');
+
+      // Print/Export handled by browser
+      document.getElementById('reportCard').scrollIntoView({behavior:'smooth'});
+    }
+  </script>
+</section>
+
 
 </script>
 </body>
 </html>
+
 
 
 

@@ -150,29 +150,45 @@
                 AfterSchoolClasses.<span class="text-yellow-300">online</span>
             </a>
             <div class="hidden md:flex space-x-8">
-                <a href="#home" class="hover:text-yellow-300 transition duration-200 nav-link">Home</a>
-                <a href="#programs" class="hover:text-yellow-300 transition duration-200 nav-link">Our Programs</a>
-                <a href="#testimonials" class="hover:text-yellow-300 transition duration-200 nav-link">Success Stories</a>
-                <a href="#about" class="hover:text-yellow-300 transition duration-200 nav-link">About Founder</a>
-                <a href="#contact" class="hover:text-yellow-300 transition duration-200 nav-link">Contact</a>
-                <a href="#teacher-arrangement-tool-section" class="hover:text-yellow-300 transition duration-200 nav-link">School Web Tool</a>
-            </div>
+    <a href="#home" class="hover:text-yellow-300 transition duration-200 nav-link">Home</a>
+    <a href="#programs" class="hover:text-yellow-300 transition duration-200 nav-link">Our Programs</a>
+    <a href="#testimonials" class="hover:text-yellow-300 transition duration-200 nav-link">Success Stories</a>
+    <a href="FM.html" class="font-bold text-yellow-300 hover:text-white transition duration-200">FutureMeter Test</a>
+    <a href="#about" class="hover:text-yellow-300 transition duration-200 nav-link">About Founder</a>
+    <a href="#contact" class="hover:text-yellow-300 transition duration-200 nav-link">Contact</a>
+    <a href="#teacher-arrangement-tool-section" class="hover:text-yellow-300 transition duration-200 nav-link">School Web Tool</a>
+</div>
             <button id="mobile-menu-button" class="md:hidden focus:outline-none">
                 <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
             </button>
         </nav>
-        <div id="mobile-menu" class="hidden md:hidden bg-blue-800 bg-opacity-95 py-4">
-            <a href="#home" class="block px-4 py-2 text-white hover:bg-blue-700 transition duration-200 nav-link">Home</a>
-            <a href="#programs" class="block px-4 py-2 text-white hover:bg-blue-700 transition duration-200 nav-link">Our Programs</a>
-            <a href="#testimonials" class="block px-4 py-2 text-white hover:bg-blue-700 transition duration-200 nav-link">Success Stories</a>
-            <a href="#about" class="block px-4 py-2 text-white hover:bg-blue-700 transition duration-200 nav-link">About Mr. Trivedi</a>
-            <a href="#contact" class="block px-4 py-2 text-white hover:bg-blue-700 transition duration-200 nav-link">Contact</a>
-            <a href="#teacher-arrangement-tool-section" class="block px-4 py-2 text-white hover:bg-blue-700 transition duration-200 nav-link">School Web Tool</a>
-        </div>
+         <div id="mobile-menu" class="hidden md:hidden bg-blue-800 bg-opacity-95 py-4">
+    <a href="#home" class="block px-4 py-2 text-white hover:bg-blue-700 transition duration-200 nav-link">Home</a>
+    <a href="#programs" class="block px-4 py-2 text-white hover:bg-blue-700 transition duration-200 nav-link">Our Programs</a>
+    <a href="#testimonials" class="block px-4 py-2 text-white hover:bg-blue-700 transition duration-200 nav-link">Success Stories</a>
+    <a href="FM.html" class="block px-4 py-2 font-bold text-yellow-300 hover:bg-blue-700 transition duration-200">FutureMeter Test</a>
+    <a href="#about" class="block px-4 py-2 text-white hover:bg-blue-700 transition duration-200 nav-link">About Mr. Trivedi</a>
+    <a href="#contact" class="block px-4 py-2 text-white hover:bg-blue-700 transition duration-200 nav-link">Contact</a>
+    <a href="#teacher-arrangement-tool-section" class="block px-4 py-2 text-white hover:bg-blue-700 transition duration-200 nav-link">School Web Tool</a>
+</div>
     </header>
     <section id="home" class="section-padding text-center relative overflow-hidden hero-section-with-video">
+        <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-8">
+    <a href="#programs" class="btn-primary section-scroll-link">
+        Explore Our Programs
+    </a>
+    <a href="#contact" class="btn-primary section-scroll-link">
+        Contact Now
+    </a>
+    <a href="FM.html" class="btn-primary bg-indigo-600 hover:bg-indigo-700">
+        Start FutureMeter Test
+    </a>
+    <a href="https://www.youtube.com/@afterschoolclasses.online" target="_blank" rel="noopener noreferrer" class="btn-primary">
+        Visit Our YouTube Channel
+    </a>
+</div>
         <div class="max-w-4xl mx-auto relative z-10 slide-in-up">
             <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
                 Learning made easy with <span class="text-yellow-300">Technology & Innovation</span>
@@ -505,20 +521,29 @@
         mobileMenu.classList.toggle('hidden');
     });
 
-    // Handle navigation clicks for both desktop and mobile
-    navLinks.forEach(link => {
-        link.addEventListener('click', (event) => {
-            console.log(`Debug: Nav link clicked. Link href: ${link.getAttribute('href')}`);
-            event.preventDefault(); // Prevent default anchor jump
-            const targetId = link.getAttribute('href').substring(1); // Get section ID from href
-            console.log(`Debug: Target section ID: ${targetId}`);
-            showSection(targetId);
-            if (!mobileMenu.classList.contains('hidden')) {
-                mobileMenu.classList.add('hidden'); // Close mobile menu after selection
-            }
-        });
-    });
+ // ... (Lines 490-494 of your code, which includes mobileMenuButton.addEventListener) ...
 
+// Handle navigation clicks for both desktop and mobile
+navLinks.forEach(link => {
+    link.addEventListener('click', (event) => {
+        const href = link.getAttribute('href');
+        
+        // **NEW LOGIC: If the link is not an internal anchor (#), allow default behavior (i.e., redirect to FM.html)**
+        if (href && !href.startsWith('#')) {
+            // Let the browser handle the external link (FM.html)
+            return;
+        }
+
+        console.log(`Debug: Nav link clicked. Link href: ${href}`);
+        event.preventDefault(); // Prevent default anchor jump for internal links
+        const targetId = href.substring(1); // Get section ID from href
+        console.log(`Debug: Target section ID: ${targetId}`);
+        showSection(targetId);
+        if (!mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden'); // Close mobile menu after selection
+        }
+    });
+});
     // Handle section scroll links (e.g., buttons on home page)
     sectionScrollLinks.forEach(link => {
         link.addEventListener('click', (event) => {
@@ -1194,6 +1219,7 @@
 </script>
 </body>
 </html>
+
 
 
 

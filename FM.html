@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SMART FutureMeter: Adaptive Aptitude Compass</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Custom CSS variables and design */
+        :root {
+            --primary-color: #1e40af; /* Blue-800 */
+            --secondary-color: #6d28d9; /* Violet-700 */
+            --whatsapp-color: #25D366;
+        }
+        body {font-family:'Inter',sans-serif; background-color: #f8fafc;}
+        .btn {
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: #fff;
+            font-weight: 700;
+            border-radius: 0.75rem; 
+            padding: 1rem 3rem;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn:hover {
+            background: linear-gradient(to right, #1d4ed8, #4c1d95);
+            transform: translateY(-1px);
+        }
+        .btn-whatsapp {
+            background-color: var(--whatsapp-color);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 700;
+            transition: background-color 0.3s;
+            display: inline-flex;
+            align-items: center;
+        }
+        .btn-whatsapp:hover { background-color: #1DA851; }
+        .section-box{
+            background: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 1.5rem;
+            padding: 3rem;
+            margin-top: 2.5rem;
+        }
+        .hidden{display:none;}
+        .timer-box{
+            position: fixed; top: 24px; right: 30px; z-index: 1000;
+            background-color: #f0f9ff; border: 2px solid var(--primary-color);
+            border-radius: 0.75rem; font-size: 1.2rem; padding: 10px 20px;
+        }
+        .hero {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #3b82f6 100%);
+            color: white; padding: 60px 0; text-align: center;
+        }
+        .hero .title {font-size: 3.5rem; font-weight: 800; margin-bottom: 1rem;}
+        .hero .desc {font-size: 1.5rem; font-weight: 500;}
+        .question-box {
+            border: 2px solid #eef2ff; padding: 1.75rem; border-radius: 1rem; margin-bottom: 2rem; background-color: #f9fafb;
+        }
+        .option-label {
+            display: flex; align-items: center; background-color: #ffffff;
+            padding: 12px 20px; border-radius: 8px; cursor: pointer;
+            transition: all 0.2s; margin-top: 10px; border: 1px solid #e5e7eb;
+        }
+        .option-label:hover {
+            background-color: #eff6ff; border-color: var(--primary-color); box-shadow: 0 2px 5px rgba(30, 64, 175, 0.1);
+        }
+        .option-label input[type="radio"] {
+            margin-right: 15px; transform: scale(1.3); accent-color: var(--primary-color);
+        }
+        /* Report styling for better PDF look */
+        #reportContent {
+            padding: 2rem; border: 1px solid #e5e7eb; background: #ffffff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); border-radius: 1rem;
+        }
+        .report-section-title {
+            color: var(--secondary-color); font-weight: 700; border-bottom: 2px solid #eee; padding-bottom: 0.5rem; margin-top: 1.5rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <header class="py-6 bg-gradient-to-r from-blue-800 to-purple-800 text-white shadow-xl">
+        <div class="max-w-7xl mx-auto flex justify-between items-center px-6">
+            <span class="text-3xl font-extrabold tracking-wide">SMART FutureMeter</span>
+        </div>
+    </header>
+
+    <div id="section-landing" class="hero">
+        <div class="title">🌟 Adaptive Aptitude Compass</div>
+        <div class="desc">A dynamic diagnostic tool to measure **Numeracy, Literacy, Aptitude, and Personality.**</div>
+        <button id="startAssessment" class="btn shadow-2xl text-xl mt-12">Begin Your FutureMeter Journey</button>
+    </div>
+
+    <div id="timerBox" class="timer-box font-bold text-blue-800 hidden"></div>
+
+    <main>
+        <section id="section-profile" class="section-box max-w-xl mx-auto hidden">
+            <h2 class="text-3xl font-bold mb-6 text-blue-800">1. Student Profile</h2>
+            <form id="profileForm" class="grid gap-5">
+                <input required name="name" class="border p-4 rounded-xl focus:ring-blue-500 focus:border-blue-500 text-lg" placeholder="Full Name">
+                <input required name="age" type="number" min="5" max="20" class="border p-4 rounded-xl focus:ring-blue-500 focus:border-blue-500 text-lg" placeholder="Age">
+                <select required name="grade" class="border p-4 rounded-xl focus:ring-blue-500 focus:border-blue-500 text-lg">
+                    <option value="">Select Class/Grade</option>
+                    <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>
+                    <option value="5" selected>5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option>
+                    <option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+                </select>
+                <button class="btn w-full mt-6 text-xl" type="submit">Continue to Assessment</button>
+            </form>
+        </section>
+        
+        <section id="section-core" class="section-box max-w-3xl mx-auto hidden">
+            <h2 class="text-3xl font-bold mb-4 text-blue-800">2. Core Skills (Literacy & Numeracy) <span id="core-progress" class="text-lg font-normal text-gray-500">(Q1/30)</span></h2>
+            <form id="coreForm" class="space-y-6"></form>
+        </section>
+
+        <section id="section-aptitude" class="section-box max-w-3xl mx-auto hidden">
+            <h2 class="text-3xl font-bold mb-4 text-blue-800">3. Aptitude & Reasoning <span id="apt-progress" class="text-lg font-normal text-gray-500">(Q1/15)</span></h2>
+            <form id="aptitudeForm" class="space-y-6"></form>
+        </section>
+        
+        <section id="section-personality" class="section-box max-w-3xl mx-auto hidden">
+            <h2 class="text-3xl font-bold mb-4 text-blue-800">4. Personality & Learning Style <span id="psycho-progress" class="text-lg font-normal text-gray-500">(Q1/15)</span></h2>
+            <form id="personalityForm" class="space-y-6"></form>
+        </section>
+        
+        <section id="section-report" class="section-box max-w-4xl mx-auto hidden">
+            <h2 class="text-4xl font-extrabold mb-6 text-purple-700">5. Your Comprehensive FutureMeter Report</h2>
+            
+            <div id="reportContent" class="mb-8 p-6"></div> 
+            
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <button class="btn text-lg" onclick="downloadPDF()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H5a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2z" />
+                    </svg>
+                    Download Report (PDF)
+                </button>
+                <button class="btn-whatsapp text-lg flex items-center" onclick="shareOnWhatsApp()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="mr-2">
+                        <path d="M12.039 2.019A10.019 10.019 0 0 0 2 12.039a10.019 10.019 0 0 0 10.039 10.019c4.764 0 8.783-3.267 9.771-7.734l1.183-.564c-.035-.152-.07-.306-.118-.456l-1.895-.947c-.503-.251-1.077-.282-1.618-.086a8.038 8.038 0 0 1-5.143 2.083c-2.308 0-4.437-.899-6.039-2.483s-2.483-3.719-2.483-6.039a8.038 8.038 0 0 1 2.083-5.143c.196-.541.165-1.115-.086-1.618l-.947-1.895c-.15-.048-.304-.083-.456-.118l-.564 1.183A9.771 9.771 0 0 0 2.019 12.039zM12.039 3.999a8.04 8.04 0 0 1 8.04 8.04 8.04 8.04 0 0 1-8.04 8.04 8.04 8.04 0 0 1-8.04-8.04 8.04 8.04 0 0 1 8.04-8.04zM16.92 14.868l.186-.339c.075-.138.016-.3-.14-.38l-1.921-.96a.379.379 0 0 0-.414.075l-1.02 1.258c-.066.082-.18.106-.27.062a4.996 4.996 0 0 1-2.92-1.748 4.98 4.98 0 0 1-1.748-2.92c-.044-.09-.02-.204.062-.27l1.258-1.02a.379.379 0 0 0 .075-.414l-.96-1.921c-.08-.156-.242-.215-.38-.14l-.339.186c-.22.12-.34.37-.34.629a6.007 6.007 0 0 0 6 6c.259 0 .509-.12.629-.34z"/>
+                    </svg>
+                    Share on WhatsApp
+                </button>
+                <button class="btn text-lg" onclick="location.reload()">Restart Assessment</button>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // --- Core State Management ---
+        let student = { name: "", grade: 5, age: 10 };
+        let timer = 0, timerInterval;
+        let usedQuestions = new Set(); 
+        
+        let state = {
+            currentQuiz: null,
+            coreQIndex: 0, aptQIndex: 0, psychoQIndex: 0,
+            maxCoreQ: 30, // 15 Literacy + 15 Numeracy
+            maxAptQ: 15,
+            maxPsychoQ: 15,
+            coreAnswers: [], aptAnswers: [], psychoAnswers: [],
+            traitCounts: {},
+            skillScores: { 
+                'Fundamental Numeracy': { correct: 0, total: 0, growthAreas: [] }, 
+                'Literacy (Verbal/Grammar)': { correct: 0, total: 0, growthAreas: [] },
+                'Reading Comprehension': { correct: 0, total: 0, growthAreas: [] },
+                'Problem Solving Aptitude': { correct: 0, total: 0, growthAreas: [] },
+                'Quantitative Aptitude': { correct: 0, total: 0, growthAreas: [] },
+                'Data Interpretation Aptitude': { correct: 0, total: 0, growthAreas: [] },
+            }
+        };
+
+        // --- EXPANDED QUESTION BANK (Detailed with tags) ---
+        const ALL_QUESTIONS = [
+            // --- CORE SKILLS: LITERACY ---
+            { q: "Choose the correct antonym for 'open'?", options: ["close", "shut", "locked", "start"], a: 0, domain: "Literacy", skill: "Literacy (Verbal/Grammar)", subskill: "Antonyms", grade: 3, difficulty: "easy" },
+            { q: "Identify the noun: quickly, run, apple, happy.", options: ["quickly", "run", "apple", "happy"], a: 2, domain: "Literacy", skill: "Literacy (Verbal/Grammar)", subskill: "Parts of Speech", grade: 2, difficulty: "easy" },
+            { q: "The plural of 'wolf' is: (wolfs / wolves / wolvs / wolfies)", options: ["wolfs", "wolves", "wolvs", "wolfies"], a: 1, domain: "Literacy", skill: "Literacy (Verbal/Grammar)", subskill: "Plurals", grade: 4, difficulty: "medium" },
+            { q: "Synonym of 'Abundant'?", options: ["Scarce", "Plentiful", "Rare", "Small"], a: 1, domain: "Literacy", skill: "Literacy (Verbal/Grammar)", subskill: "Synonyms", grade: 7, difficulty: "hard" },
+            { q: "Which is the correct possessive form: (The dog's tail / The dogs tail / The dog tail)", options: ["The dog's tail", "The dogs tail", "The dog tail"], a: 0, domain: "Literacy", skill: "Literacy (Verbal/Grammar)", subskill: "Punctuation", grade: 5, difficulty: "medium" },
+            { q: "If you are 'Ambitious', you are full of:", options: ["Sadness", "Boredom", "Doubt", "Desire to succeed"], a: 3, domain: "Literacy", skill: "Literacy (Verbal/Grammar)", subskill: "Vocabulary", grade: 6, difficulty: "medium" },
+            { passage: "The sun is the star at the center of the Solar System. It is a nearly perfect ball of hot plasma.", q: "What is the sun made of, according to the passage?", options: ["Liquid water", "Cold rock", "Hot plasma", "Solid metal"], a: 2, domain: "Literacy", skill: "Reading Comprehension", subskill: "Fact Recall", grade: 5, difficulty: "medium" },
+            { passage: "Amy was sad because her favorite toy, a small, worn teddy bear, was missing.", q: "What is the main idea of the paragraph?", options: ["Amy lost a cat", "Amy was looking for a lost toy", "The mother found the toy", "The toy was under the bed"], a: 1, domain: "Literacy", skill: "Reading Comprehension", subskill: "Main Idea", grade: 3, difficulty: "easy" },
+            { q: "Complete the idiom: 'Bite the ___.'", options: ["hand", "dust", "bullet", "apple"], a: 2, domain: "Literacy", skill: "Literacy (Verbal/Grammar)", subskill: "Idioms", grade: 8, difficulty: "hard" },
+            { q: "Which word is misspelled?", options: ["Accommodate", "Separate", "Reccommend", "Occasion"], a: 2, domain: "Literacy", skill: "Literacy (Verbal/Grammar)", subskill: "Spelling", grade: 6, difficulty: "hard" },
+
+            // --- CORE SKILLS: NUMERACY ---
+            { q: "What is 100 divided by 10?", options: ["10", "5", "15", "20"], a: 0, domain: "Numeracy", skill: "Fundamental Numeracy", subskill: "Division", grade: 3, difficulty: "easy" },
+            { q: "Find the sum: 17 + 25", options: ["32", "42", "41", "52"], a: 2, domain: "Numeracy", skill: "Fundamental Numeracy", subskill: "Addition", grade: 2, difficulty: "easy" },
+            { q: "What is the perimeter of a rectangle with sides 5cm and 3cm?", options: ["8 cm", "15 cm", "16 cm", "12 cm"], a: 2, domain: "Numeracy", skill: "Quantitative Aptitude", subskill: "Geometry", grade: 5, difficulty: "medium" },
+            { q: "LCM of 4 and 6?", options: ["8", "12", "24", "14"], a: 1, domain: "Numeracy", skill: "Quantitative Aptitude", subskill: "LCM/HCF", grade: 5, difficulty: "medium" },
+            { q: "Convert 0.25 to a fraction.", options: ["1/2", "1/4", "3/4", "1/5"], a: 1, domain: "Numeracy", skill: "Fundamental Numeracy", subskill: "Fractions/Decimals", grade: 4, difficulty: "easy" },
+            { q: "What is 20% of 50?", options: ["5", "10", "15", "20"], a: 1, domain: "Numeracy", skill: "Quantitative Aptitude", subskill: "Percentage", grade: 6, difficulty: "hard" },
+            { q: "Which is a prime number: 4, 9, 11, 15?", options: ["4", "9", "11", "15"], a: 2, domain: "Numeracy", skill: "Fundamental Numeracy", subskill: "Number Properties", grade: 4, difficulty: "medium" },
+            { q: "Solve for x: 3x - 5 = 10.", options: ["3", "5", "4", "2"], a: 1, domain: "Numeracy", skill: "Problem Solving Aptitude", subskill: "Simple Algebra", grade: 7, difficulty: "hard" },
+            { q: "If you save $5 a week, how much do you save in 8 weeks?", options: ["$30", "$40", "$45", "$50"], a: 1, domain: "Numeracy", skill: "Problem Solving Aptitude", subskill: "Word Problems", grade: 3, difficulty: "easy" },
+            { q: "Area of a circle with radius 7 ($\pi=22/7$)?", options: ["44", "154", "49", "14"], a: 1, domain: "Numeracy", skill: "Quantitative Aptitude", subskill: "Geometry", grade: 8, difficulty: "hard" },
+            
+            // Adding more questions to ensure the pool isn't quickly exhausted (total 30 for core recommended)
+            { q: "What is 3/4 as a decimal?", options: ["0.34", "0.75", "0.50", "0.25"], a: 1, domain: "Numeracy", skill: "Fundamental Numeracy", subskill: "Fractions/Decimals", grade: 5, difficulty: "medium" },
+            { q: "What is the next number: 1, 4, 9, 16, __?", options: ["20", "25", "36", "30"], a: 1, domain: "Numeracy", skill: "Fundamental Numeracy", subskill: "Sequence", grade: 4, difficulty: "easy" },
+            { q: "The word 'rapidly' is a/an:", options: ["Noun", "Verb", "Adjective", "Adverb"], a: 3, domain: "Literacy", skill: "Literacy (Verbal/Grammar)", subskill: "Parts of Speech", grade: 5, difficulty: "medium" },
+            { passage: "Cats are independent but also enjoy playing.", q: "What do cats enjoy besides being independent?", options: ["Sleeping", "Playing", "Eating", "Running"], a: 1, domain: "Literacy", skill: "Reading Comprehension", subskill: "Fact Recall", grade: 2, difficulty: "easy" },
+            { q: "Correct the sentence: 'They is going home.'", options: ["They are going home.", "They goes home.", "They was going home.", "He is going home."], a: 0, domain: "Literacy", skill: "Literacy (Verbal/Grammar)", subskill: "Grammar", grade: 3, difficulty: "easy" },
+            { q: "If a shirt costs $25 and is on sale for 10% off, what is the discount?", options: ["$1.50", "$2.50", "$5.00", "$10.00"], a: 1, domain: "Numeracy", skill: "Quantitative Aptitude", subskill: "Percentage", grade: 7, difficulty: "hard" },
+            { q: "Which word means 'to begin'?", options: ["End", "Commence", "Stop", "Cease"], a: 1, domain: "Literacy", skill: "Literacy (Verbal/Grammar)", subskill: "Synonyms", grade: 4, difficulty: "medium" },
+            { q: "Calculate the volume of a cube with side 3cm.", options: ["9 $cm^2$", "27 $cm^3$", "18 $cm^3$", "6 $cm^2$"], a: 1, domain: "Numeracy", skill: "Quantitative Aptitude", subskill: "Geometry", grade: 6, difficulty: "hard" },
+            { passage: "The moon causes tides by pulling on the Earth's oceans. Tides happen twice a day.", q: "How often do tides occur?", options: ["Once a week", "Twice a day", "Once a month", "Every hour"], a: 1, domain: "Literacy", skill: "Reading Comprehension", subskill: "Fact Recall", grade: 6, difficulty: "medium" },
+            { q: "The number 1,234 is divisible by:", options: ["3", "5", "9", "2"], a: 3, domain: "Numeracy", skill: "Fundamental Numeracy", subskill: "Divisibility", grade: 5, difficulty: "medium" },
+
+            // --- APTITUDE & REASONING (15 Questions) ---
+            { q: "What comes next in the sequence: 2, 6, 12, 20, __?", options: ["28", "30", "32", "36"], a: 1, domain: "Aptitude", skill: "Problem Solving Aptitude", subskill: "Number Series", grade: 6, difficulty: "medium" },
+            { q: "Odd one out: Apple, Banana, Potato, Orange.", options: ["Apple", "Banana", "Potato", "Orange"], a: 2, domain: "Aptitude", skill: "Problem Solving Aptitude", subskill: "Classification", grade: 3, difficulty: "easy" },
+            { q: "If 1st January is a Sunday, what day is 30th January?", options: ["Tuesday", "Wednesday", "Monday", "Thursday"], a: 2, domain: "Aptitude", skill: "Problem Solving Aptitude", subskill: "Calendar Logic", grade: 7, difficulty: "hard" },
+            { q: "Book is to Author as Statute is to ___.", options: ["Law", "Sculptor", "Government", "Stone"], a: 1, domain: "Aptitude", skill: "Verbal Aptitude", subskill: "Analogy", grade: 5, difficulty: "medium" },
+            { q: "Based on the chart (A: 50%, B: 30%, C: 20%), which group is the smallest?", options: ["A", "B", "C", "A and B are equal"], a: 2, domain: "Aptitude", skill: "Data Interpretation Aptitude", subskill: "Visual Data", grade: 4, difficulty: "easy" },
+            { q: "If all reds are blues, and all blues are greens, are all reds greens?", options: ["Yes", "No", "Maybe", "Can't say"], a: 0, domain: "Aptitude", skill: "Problem Solving Aptitude", subskill: "Syllogism", grade: 8, difficulty: "hard" },
+            { q: "A clock reads 3:00. What is the angle between the hour and minute hand?", options: ["30 degrees", "60 degrees", "90 degrees", "180 degrees"], a: 2, domain: "Aptitude", skill: "Quantitative Aptitude", subskill: "Time/Angle", grade: 8, difficulty: "hard" },
+            { q: "What comes next: Z, X, V, T, __?", options: ["U", "R", "S", "W"], a: 1, domain: "Aptitude", skill: "Problem Solving Aptitude", subskill: "Letter Series", grade: 5, difficulty: "medium" },
+            { q: "A store sold 10 shirts on Monday and 15 on Tuesday. What was the average daily sale?", options: ["10", "12.5", "15", "25"], a: 1, domain: "Aptitude", skill: "Quantitative Aptitude", subskill: "Averages", grade: 6, difficulty: "medium" },
+            { q: "Interpret the data: (Table shows 5 kids, 3 pets each). How many total pets?", options: ["12", "15", "8", "20"], a: 1, domain: "Aptitude", skill: "Data Interpretation Aptitude", subskill: "Simple Tables", grade: 3, difficulty: "easy" },
+            { q: "If CAT is coded as 24, what is DOG (A=1, B=2, C=3...)?", options: ["24", "26", "30", "36"], a: 1, domain: "Aptitude", skill: "Problem Solving Aptitude", subskill: "Coding-Decoding", grade: 7, difficulty: "hard" },
+            { q: "If East is called North, what is North-West called?", options: ["North-East", "South-West", "North-North-West", "East-North"], a: 0, domain: "Aptitude", skill: "Problem Solving Aptitude", subskill: "Directions", grade: 7, difficulty: "hard" },
+            { q: "Find the missing number: 10, 9, 7, 4, __", options: ["0", "1", "-1", "2"], a: 0, domain: "Aptitude", skill: "Problem Solving Aptitude", subskill: "Number Series", grade: 5, difficulty: "medium" },
+            { q: "Chair is to Wood as Shirt is to ___.", options: ["Cotton", "Body", "Sleeve", "Button"], a: 0, domain: "Aptitude", skill: "Verbal Aptitude", subskill: "Analogy", grade: 4, difficulty: "easy" },
+            { q: "If 5 workers build 5 boxes in 5 minutes, how long does it take 1 worker to build 1 box?", options: ["1 minute", "5 minutes", "10 minutes", "25 minutes"], a: 1, domain: "Aptitude", skill: "Quantitative Aptitude", subskill: "Time & Work", grade: 8, difficulty: "hard" },
+
+            // --- PERSONALITY ASSESSMENT (15 Questions) ---
+            { q: "When working on a new assignment, I typically prefer to:", options: ["Plan every step meticulously", "Jump right in and start experimenting", "Find people to discuss ideas with", "Read as much as possible about the topic first"], a: null, domain: "Personality", skill: "Work Style", traitMap: ["Organized", "Kinesthetic", "Social", "Verbal"], interest: ["Analytical", "Active", "Social", "Linguistic"] },
+            { q: "I find the most interesting school club is one focused on:", options: ["Math or Robotics (STEM Interest)", "Debate or Creative Writing (Linguistic Interest)", "Sports or Outdoor activities (Physical Interest)", "Art, Drama, or Music (Creative Interest)"], a: null, domain: "Personality", skill: "Interest Area", traitMap: ["Analytical", "Verbal", "Kinesthetic", "Creative"], interest: ["STEM", "Linguistic/Arts", "Sports", "Creative Arts"] },
+            { q: "I learn best by:", options: ["Reading notes and textbooks", "Listening to teachers and audio", "Doing hands-on practice or experiments", "Seeing diagrams, charts, and videos"], a: null, domain: "Personality", skill: "Type of Learner", traitMap: ["Reading-Writing", "Auditory", "Kinesthetic", "Visual"], interest: ["N/A", "N/A", "N/A", "N/A"] },
+            { q: "My friends would describe me as mainly:", options: ["Thoughtful and quiet (Introverted Type)", "Loud and interactive (Extroverted Type)", "Structured and reliable (Conscientious Type)", "Imaginative and curious (Creative Type)"], a: null, domain: "Personality", skill: "Personality Type", traitMap: ["Introverted", "Extroverted", "Organized", "Creative"], interest: ["Reflective", "Social", "Organized", "Imaginative"] },
+            { q: "When solving a difficult problem, I:", options: ["Break it down into small logical steps", "Immediately look for a simple, elegant solution", "Ask an expert or friend for advice", "Try every possible solution until one works"], a: null, domain: "Personality", skill: "Problem Solving Style", traitMap: ["Analytical", "Creative", "Social", "Kinesthetic"], interest: ["Analytical", "Creative", "Social", "Active"] },
+            { q: "In a group project, I prefer to:", options: ["Lead the team and delegate tasks", "Design the presentation slides", "Write the research report", "Perform the physical tasks or experiments"], a: null, domain: "Personality", skill: "Team Role", traitMap: ["Leadership", "Visual", "Verbal", "Kinesthetic"], interest: ["Leadership", "Creative Arts", "Linguistic", "Sports"] },
+            { q: "My favorite way to spend a rainy afternoon is:", options: ["Organizing my room or desk", "Reading a novel or writing a story", "Doing a difficult puzzle or logic game", "Chatting with friends or family"], a: null, domain: "Personality", skill: "Leisure Interest", traitMap: ["Organized", "Verbal", "Analytical", "Social"], interest: ["Organized", "Linguistic/Arts", "STEM", "Social"] },
+            { q: "When I have a conflict with a friend, I usually:", options: ["Stay quiet and wait for it to pass", "Address it directly and logically", "Try to resolve it quickly and cheerfully", "Walk away to cool down"], a: null, domain: "Personality", skill: "Conflict Style", traitMap: ["Introverted", "Analytical", "Social", "Reflective"], interest: ["Reflective", "Analytical", "Social", "Reflective"] },
+            { q: "I am most confident when I am:", options: ["Giving a speech", "Playing a competitive sport", "Analyzing data", "Creating something new"], a: null, domain: "Personality", skill: "Self-Confidence", traitMap: ["Verbal", "Kinesthetic", "Analytical", "Creative"], interest: ["Linguistic", "Sports", "STEM", "Creative Arts"] },
+            { q: "The thing I value most is:", options: ["Order and precision", "New and exciting experiences", "Understanding and harmony", "Intellectual challenge"], a: null, domain: "Personality", skill: "Core Values", traitMap: ["Organized", "Kinesthetic", "Social", "Analytical"], interest: ["Organized", "Active", "Social", "Analytical"] },
+            { q: "I prefer school subjects that focus on:", options: ["The rules of grammar", "How things move", "Creative writing or poetry", "How the world works"], a: null, domain: "Personality", skill: "Subject Preference", traitMap: ["Verbal", "Kinesthetic", "Creative", "Analytical"], interest: ["Linguistic", "Sports", "Creative Arts", "STEM"] },
+            { q: "I would rather be:", options: ["A successful scientist", "A famous writer", "A professional athlete", "A film director"], a: null, domain: "Personality", skill: "Career Interest", traitMap: ["Analytical", "Verbal", "Kinesthetic", "Creative"], interest: ["STEM", "Linguistic", "Sports", "Creative Arts"] },
+            { q: "When I am bored, I tend to:", options: ["Daydream or draw", "Tidy up my space", "Call a friend", "Start pacing or stretching"], a: null, domain: "Personality", skill: "Boredom Response", traitMap: ["Creative", "Organized", "Social", "Kinesthetic"], interest: ["Creative Arts", "Organized", "Social", "Active"] },
+            { q: "I make decisions:", options: ["After careful thought and research", "Based on what my friends advise", "By following my gut feeling", "Quickly, without much deliberation"], a: null, domain: "Personality", skill: "Decision Making", traitMap: ["Analytical", "Social", "Creative", "Kinesthetic"], interest: ["Analytical", "Social", "Creative", "Active"] },
+            { q: "I am best at explaining an idea by:", options: ["Drawing a picture or diagram", "Telling a story or giving an example", "Acting it out or building a model", "Showing a list of facts and figures"], a: null, domain: "Personality", skill: "Communication Style", traitMap: ["Visual", "Verbal", "Kinesthetic", "Analytical"], interest: ["Creative Arts", "Linguistic", "Active", "Analytical"] }
+        ];
+        
+        // --- Utility Functions ---
+        function showSection(idToShow) {
+            ["section-landing", "section-profile", "section-core", "section-aptitude", "section-personality", "section-report"].forEach(id => {
+                document.getElementById(id).classList.add("hidden");
+            });
+            document.getElementById(idToShow).classList.remove("hidden");
+        }
+
+        function startTimer() {
+            timer = 0;
+            document.getElementById("timerBox").classList.remove("hidden");
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timer += 1;
+                let m = Math.floor(timer / 60), s = timer % 60;
+                document.getElementById("timerBox").textContent = `⏳ Time: ${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+            document.getElementById("timerBox").classList.add("hidden");
+        }
+        
+        // --- ADAPTIVE LOGIC (Fixes the question loading issue) ---
+        function getQuestionPool(domains, requiredSkill, grade, currentAnswers) {
+            const gradeNum = student.grade;
+            
+            // 1. Filter by Domain, Skill, and Grade Proximity, excluding used questions
+            let filteredPool = ALL_QUESTIONS.filter(q => 
+                (domains.includes(q.domain) || (domains.includes('Core') && (q.domain === 'Numeracy' || q.domain === 'Literacy'))) &&
+                (q.grade >= Math.max(1, gradeNum - 2) && q.grade <= Math.min(12, gradeNum + 2)) &&
+                (q.skill === requiredSkill || q.subskill === requiredSkill || q.domain === requiredSkill) &&
+                (!usedQuestions.has(q.q))
+            );
+
+            // 2. Determine Target Difficulty (Adaptive part)
+            const recentAnswers = currentAnswers.slice(-5);
+            let correctCount = recentAnswers.filter(a => a.correct).length;
+            let targetDifficulty = "medium";
+            if (currentAnswers.length > 5) {
+                if (correctCount >= 4) { targetDifficulty = "hard"; } 
+                else if (correctCount <= 1) { targetDifficulty = "easy"; } 
+            }
+
+            // 3. Attempt to get a question matching the target difficulty
+            let availableQuestions = filteredPool.filter(q => q.difficulty === targetDifficulty);
+            
+            // 4. Fallback 1: If target difficulty fails, try any difficulty from the filtered pool
+            if (availableQuestions.length === 0 && filteredPool.length > 0) {
+                availableQuestions = filteredPool; 
+            }
+            
+            // 5. Select and mark as used
+            if (availableQuestions.length > 0) {
+                const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+                const q = availableQuestions[randomIndex];
+                usedQuestions.add(q.q);
+                return q;
+            }
+            
+            // 6. Fallback 2: If the skill pool is exhausted, try any unused question from the domain
+            const generalFallback = ALL_QUESTIONS.filter(q => 
+                (domains.includes(q.domain) || (domains.includes('Core') && (q.domain === 'Numeracy' || q.domain === 'Literacy'))) && 
+                (!usedQuestions.has(q.q))
+            );
+            if (generalFallback.length > 0) {
+                 const q = generalFallback[Math.floor(Math.random() * generalFallback.length)];
+                 usedQuestions.add(q.q);
+                 return q;
+            }
+
+            return null; 
+        }
+
+        // --- Question Rendering (Index advancement handled here) ---
+        function renderQuestion(qData, formId, domain) {
+            const form = document.getElementById(formId);
+            state.currentQuiz = domain;
+            
+            // Advance index only if a question exists
+            if (domain === 'Core') { state.coreQIndex++; }
+            else if (domain === 'Aptitude') { state.aptQIndex++; }
+            else if (domain === 'Personality') { state.psychoQIndex++; }
+            
+            let currentQIndex = domain === 'Core' ? state.coreQIndex : domain === 'Aptitude' ? state.aptQIndex : state.psychoQIndex;
+            
+            const maxQ = domain === 'Core' ? state.maxCoreQ : domain === 'Aptitude' ? state.maxAptQ : state.maxPsychoQ;
+            const progressEl = document.getElementById(formId.replace('Form', '-progress'));
+            if(progressEl) progressEl.textContent = `(Q${currentQIndex}/${maxQ})`;
+
+            let qHTML = `<div class="question-box">
+                ${qData.passage ? `<p class="text-md italic text-gray-600 mb-4 border-l-4 border-yellow-500 pl-3">Passage: ${qData.passage}</p>` : ''}
+                <p class="text-xl font-semibold mb-4 text-gray-900">Q${currentQIndex}: ${qData.q}</p>
+                <div class="options-container space-y-2">`;
+            
+            qData.options.forEach((opt, i) => {
+                qHTML += `<label class="option-label">
+                    <input type="radio" name="answer" value="${i}" required> ${opt}
+                </label>`;
+            });
+
+            qHTML += `</div></div><button class="btn w-full mt-6" type="submit">Next Question</button>`;
+            form.innerHTML = qHTML;
+
+            form.onsubmit = (ev) => processAnswer(ev, qData, formId, domain);
+        }
+
+        // --- Answer Processing and Flow Control ---
+        function processAnswer(ev, qData, formId, domain) {
+            ev.preventDefault();
+            const form = document.getElementById(formId);
+            const selectedRadio = form.querySelector('input[name="answer"]:checked');
+            
+            if (domain !== 'Personality') {
+                const isCorrect = parseInt(selectedRadio.value) === qData.a;
+                const currentAnswers = domain === 'Core' ? state.coreAnswers : state.aptAnswers;
+                currentAnswers.push({ correct: isCorrect, q: qData, picked: parseInt(selectedRadio.value) });
+                
+                const skillKey = qData.skill || 'Literacy (Verbal/Grammar)';
+                const score = state.skillScores[skillKey] || state.skillScores['Fundamental Numeracy'] || state.skillScores['Literacy (Verbal/Grammar)'];
+                if (score) {
+                    score.total++;
+                    if (isCorrect) score.correct++;
+                    else score.growthAreas.push(qData.subskill || qData.skill);
+                }
+            } else {
+                const selectedAnswer = parseInt(selectedRadio.value);
+                const trait = qData.traitMap[selectedAnswer];
+                const interest = qData.interest[selectedAnswer];
+                state.psychoAnswers.push({trait, interest});
+                state.traitCounts[trait] = (state.traitCounts[trait] || 0) + 1;
+                if (interest !== "N/A") state.traitCounts[interest] = (state.traitCounts[interest] || 0) + 1;
+            }
+
+            // Call the next test state using the UPDATED index
+            if (domain === 'Core') { runCoreTest(state.coreQIndex); }
+            else if (domain === 'Aptitude') { runAptitudeTest(state.aptQIndex); }
+            else if (domain === 'Personality') { runPersonalityTest(state.psychoQIndex); }
+        }
+
+        // Skill rotation list for core (Literacy/Numeracy/Comp) and aptitude (Problem Solving/Quant/Data)
+        const CORE_SKILLS = ['Fundamental Numeracy', 'Literacy (Verbal/Grammar)', 'Reading Comprehension', 'Fundamental Numeracy', 'Literacy (Verbal/Grammar)', 'Reading Comprehension'];
+        const APT_SKILLS = ['Problem Solving Aptitude', 'Quantitative Aptitude', 'Data Interpretation Aptitude', 'Problem Solving Aptitude', 'Quantitative Aptitude'];
+
+        function runCoreTest(index) {
+            if (index >= state.maxCoreQ) return runAptitudeTest(0); 
+
+            const skillKey = CORE_SKILLS[index % CORE_SKILLS.length];
+            const qData = getQuestionPool(['Literacy', 'Numeracy'], skillKey, student.grade, state.coreAnswers); 
+            
+            if (!qData) {
+                // Critical safety net: Skip to the next section if no question can be found
+                console.warn("Core question pool exhausted or no matching question found. Moving to Aptitude.");
+                return runAptitudeTest(0);
+            }
+            
+            showSection('section-core');
+            renderQuestion(qData, 'coreForm', 'Core');
+        }
+
+        function runAptitudeTest(index) {
+            if (index >= state.maxAptQ) return runPersonalityTest(0); 
+            
+            const skillKey = APT_SKILLS[index % APT_SKILLS.length];
+            const qData = getQuestionPool(['Aptitude'], skillKey, student.grade, state.aptAnswers);
+            
+            if (!qData) {
+                console.warn("Aptitude question pool exhausted. Moving to Personality.");
+                return runPersonalityTest(0);
+            }
+            
+            showSection('section-aptitude');
+            renderQuestion(qData, 'aptitudeForm', 'Aptitude');
+        }
+        
+        function runPersonalityTest(index) {
+            if (index >= state.maxPsychoQ) {
+                stopTimer();
+                return showReport();
+            }
+
+            // Personality questions are generally not adaptive by difficulty, so we use sequential selection
+            const personalityPool = ALL_QUESTIONS.filter(q => q.domain === 'Personality');
+            const qData = personalityPool[index % personalityPool.length]; 
+            
+            if (!qData) {
+                console.warn("Personality question pool exhausted. Moving to Report.");
+                stopTimer();
+                return showReport();
+            }
+
+            showSection('section-personality');
+            renderQuestion(qData, 'personalityForm', 'Personality');
+        }
+        
+        // --- Event Listeners (To start the process) ---
+        document.getElementById("startAssessment").onclick = () => { showSection("section-profile"); };
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            student.name = this.elements.name.value;
+            student.age = parseInt(this.elements.age.value);
+            student.grade = parseInt(this.elements.grade.value);
+            
+            // Reset state for new assessment (important if restarting)
+            Object.assign(state, {
+                coreQIndex: 0, aptQIndex: 0, psychoQIndex: 0,
+                coreAnswers: [], aptAnswers: [], psychoAnswers: [],
+                traitCounts: {},
+            });
+            usedQuestions.clear(); 
+            
+            startTimer();
+            runCoreTest(0); // Start the core test flow
+        });
+
+
+        // --- Report Generation Logic ---
+        function generateScoreHTML(skillKey, score) {
+            if (score.total === 0) return ''; 
+            const percent = Math.round((score.correct / score.total) * 100);
+            const color = percent >= 80 ? 'text-green-600' : percent >= 60 ? 'text-yellow-600' : 'text-red-600';
+            const bg = percent >= 80 ? 'bg-green-50' : percent >= 60 ? 'bg-yellow-50' : 'bg-red-50';
+            
+            const uniqueGrowthAreas = [...new Set(score.growthAreas)].filter(a => a !== 'Literacy (Verbal/Grammar)' && a !== 'Fundamental Numeracy');
+
+            return `
+                <div class="p-4 border-l-4 rounded-lg shadow-sm ${bg} border-l-blue-600">
+                    <p class="text-lg font-semibold text-gray-800">${skillKey}</p>
+                    <div class="flex justify-between items-center mt-1">
+                        <p class="text-3xl font-extrabold ${color}">${percent}%</p>
+                        <p class="text-sm text-gray-600">${score.correct}/${score.total} Correct</p>
+                    </div>
+                    <p class="text-xs mt-2 text-gray-700 italic">Growth Focus: ${uniqueGrowthAreas.length > 0 ? uniqueGrowthAreas.slice(0, 3).join(', ') : 'Strong foundational skills.'}</p>
+                </div>
+            `;
+        }
+
+        function getProfileInsight(topTrait) {
+            if (topTrait.includes('Analytical') || topTrait.includes('STEM')) return { title: "Analytical Thinker 🧠", detail: "Thrives with logic, data, and structured problem-solving. Potential in STEM/Finance." };
+            if (topTrait.includes('Creative') || topTrait.includes('Visual')) return { title: "Creative Innovator 🎨", detail: "Driven by imagination and unique solutions. Potential in Design/Arts/Media." };
+            if (topTrait.includes('Social') || topTrait.includes('Verbal') || topTrait.includes('Linguistic')) return { title: "Social/Linguistic Communicator 💬", detail: "Excels in interaction, empathy, and expression. Potential in HR/Teaching/Law." };
+            if (topTrait.includes('Kinesthetic') || topTrait.includes('Active')) return { title: "Active/Hands-on Learner 💪", detail: "Learns by doing and physical engagement. Potential in Engineering/Trades/Sports." };
+            if (topTrait.includes('Organized') || topTrait.includes('Conscientious')) return { title: "Conscientious Planner 📋", detail: "Values structure, reliability, and precision. Potential in Management/Operations." };
+            return { title: "Versatile Explorer", detail: "Shows flexibility across domains. Continue exploration." };
+        }
+
+        function showReport() {
+            showSection('section-report');
+            const minutes = Math.floor(timer / 60), seconds = timer % 60;
+            
+            let sortedTraits = Object.entries(state.traitCounts).sort((a, b) => b[1] - a[1]);
+            const topTraits = sortedTraits.slice(0, 3).map(([trait]) => trait);
+            const topTrait = topTraits[0] || "Versatile";
+            const profileInsight = getProfileInsight(topTrait);
+            
+            let skillHTML = Object.keys(state.skillScores).map(key => generateScoreHTML(key, state.skillScores[key])).join('');
+            
+            const totalQs = state.maxCoreQ + state.maxAptQ;
+            const totalCorrect = state.coreAnswers.filter(a => a.correct).length + state.aptAnswers.filter(a => a.correct).length;
+            const overallScore = ((totalCorrect / totalQs) * 100).toFixed(1);
+
+            document.getElementById("reportContent").innerHTML = `
+                <div class="p-6 bg-blue-50 border-l-8 border-blue-600 mb-6 rounded-xl shadow-md">
+                    <h3 class="text-2xl font-bold text-blue-800 mb-2">${student.name}'s Diagnostic Summary</h3>
+                    <p class="text-md"><b>Grade:</b> ${student.grade} | <b>Age:</b> ${student.age}</p>
+                    <p class="font-bold text-gray-700 mt-2">Overall Score: <span class="text-purple-700 text-xl">${overallScore}%</span> | Total Time: <span class="text-purple-700">${minutes}m ${seconds.toString().padStart(2,"0")}s</span></p>
+                </div>
+
+                <h3 class="report-section-title text-2xl">Cognitive Profile & Interests</h3>
+                <div class="p-4 my-4 bg-yellow-50 border-l-4 border-yellow-500 rounded-lg">
+                    <p class="text-xl font-bold mb-2">${profileInsight.title}</p>
+                    <p class="text-base text-gray-700">${profileInsight.detail}</p>
+                    <p class="text-sm mt-2 font-medium">Top Traits: ${topTraits.join(', ')}</p>
+                </div>
+
+                <h3 class="report-section-title text-2xl">Skill Mastery Breakdown</h3>
+                <div class="grid md:grid-cols-2 gap-4 mt-4">
+                    ${skillHTML}
+                </div>
+            `;
+        }
+        
+        // --- FINAL EXPORT & SHARING FUNCTIONS (With User's WhatsApp Link) ---
+        window.downloadPDF = function() {
+            const { jsPDF } = window.jspdf;
+            const reportElement = document.getElementById('section-report');
+            const reportContent = document.getElementById('reportContent');
+
+            // Temporarily hide buttons for clean PDF capture
+            const buttonsContainer = reportElement.querySelector('.flex.flex-col');
+            if (buttonsContainer) buttonsContainer.style.display = 'none';
+            
+            html2canvas(reportContent, { scale: 3, useCORS: true }).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgProps= pdf.getImageProperties(imgData);
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+                
+                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                pdf.save(`FutureMeter_Report_${student.name.replace(/\s/g, '_')}.pdf`);
+            }).finally(() => {
+                // Restore buttons
+                if (buttonsContainer) buttonsContainer.style.display = 'flex';
+            });
+        }
+
+        window.shareOnWhatsApp = function() {
+            let sortedTraits = Object.entries(state.traitCounts).sort((a, b) => b[1] - a[1]);
+            const topTrait = sortedTraits[0] ? sortedTraits[0][0] : "Versatile";
+            
+            const totalQs = state.maxCoreQ + state.maxAptQ;
+            const totalCorrect = state.coreAnswers.filter(a => a.correct).length + state.aptAnswers.filter(a => a.correct).length;
+            const overallScore = ((totalCorrect / totalQs) * 100).toFixed(1);
+            
+            const message = `*🌟 SMART FutureMeter Report Summary*
+*Student:* ${student.name} (Grade ${student.grade})
+*Overall Score:* ${overallScore}%
+*Top Trait:* ${topTrait}
+*Key Insight:* ${getProfileInsight(topTrait).title}
+
+Tap the link to discuss the full PDF report and next steps:
+https://wa.me/message/ZLLRTZRGV76IB1`;
+
+            const encodedMessage = encodeURIComponent(message);
+            // Uses the specific URL provided by the user
+            const whatsappURL = `https://api.whatsapp.com/send?text=${encodedMessage}`;
+            
+            window.open(whatsappURL, '_blank');
+        }
+
+    </script>
+</body>
+</html>

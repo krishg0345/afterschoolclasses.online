@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SMART FutureMeter:Aptitude Compass</title>
+    <title>SMART FutureMeter: Aptitude Compass</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -251,325 +251,325 @@
             { q: "When I am bored, I tend to:", options: ["Daydream or draw", "Tidy up my space", "Call a friend", "Start pacing or stretching"], a: null, domain: "Personality", skill: "Boredom Response", traitMap: ["Creative", "Organized", "Social", "Kinesthetic"], interest: ["Creative Arts", "Organized", "Social", "Active"] },
             { q: "I make decisions:", options: ["After careful thought and research", "Based on what my friends advise", "By following my gut feeling", "Quickly, without much deliberation"], a: null, domain: "Personality", skill: "Decision Making", traitMap: ["Analytical", "Social", "Creative", "Kinesthetic"], interest: ["Analytical", "Social", "Creative", "Active"] },
             { q: "I am best at explaining an idea by:", options: ["Drawing a picture or diagram", "Telling a story or giving an example", "Acting it out or building a model", "Showing a list of facts and figures"], a: null, domain: "Personality", skill: "Communication Style", traitMap: ["Visual", "Verbal", "Kinesthetic", "Analytical"], interest: ["Creative Arts", "Linguistic", "Active", "Analytical"] }
-        ];
-        
-        // --- Utility Functions ---
-        function showSection(idToShow) {
-            ["section-landing", "section-profile", "section-core", "section-aptitude", "section-personality", "section-report"].forEach(id => {
-                document.getElementById(id).classList.add("hidden");
-            });
-            document.getElementById(idToShow).classList.remove("hidden");
-        }
+        ];
+        
+        // --- Utility Functions ---
+        function showSection(idToShow) {
+            ["section-landing", "section-profile", "section-core", "section-aptitude", "section-personality", "section-report"].forEach(id => {
+                document.getElementById(id).classList.add("hidden");
+            });
+            document.getElementById(idToShow).classList.remove("hidden");
+        }
 
-        function startTimer() {
-            timer = 0;
-            document.getElementById("timerBox").classList.remove("hidden");
-            if (timerInterval) clearInterval(timerInterval);
-            timerInterval = setInterval(() => {
-                timer += 1;
-                let m = Math.floor(timer / 60), s = timer % 60;
-                document.getElementById("timerBox").textContent = `⏳ Time: ${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
-            }, 1000);
-        }
+        function startTimer() {
+            timer = 0;
+            document.getElementById("timerBox").classList.remove("hidden");
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timer += 1;
+                let m = Math.floor(timer / 60), s = timer % 60;
+                document.getElementById("timerBox").textContent = `⏳ Time: ${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+            }, 1000);
+        }
 
-        function stopTimer() {
-            clearInterval(timerInterval);
-            document.getElementById("timerBox").classList.add("hidden");
-        }
-        
-        // --- ADAPTIVE LOGIC (Fixes the question loading issue) ---
-        function getQuestionPool(domains, requiredSkill, grade, currentAnswers) {
-            const gradeNum = student.grade;
-            
-            // 1. Filter by Domain, Skill, and Grade Proximity, excluding used questions
-            let filteredPool = ALL_QUESTIONS.filter(q => 
-                (domains.includes(q.domain) || (domains.includes('Core') && (q.domain === 'Numeracy' || q.domain === 'Literacy'))) &&
-                (q.grade >= Math.max(1, gradeNum - 2) && q.grade <= Math.min(12, gradeNum + 2)) &&
-                (q.skill === requiredSkill || q.subskill === requiredSkill || q.domain === requiredSkill) &&
-                (!usedQuestions.has(q.q))
-            );
+        function stopTimer() {
+            clearInterval(timerInterval);
+            document.getElementById("timerBox").classList.add("hidden");
+        }
+        
+        // --- ADAPTIVE LOGIC (Fixes the question loading issue) ---
+        function getQuestionPool(domains, requiredSkill, grade, currentAnswers) {
+            const gradeNum = student.grade;
+            
+            // 1. Filter by Domain, Skill, and Grade Proximity, excluding used questions
+            let filteredPool = ALL_QUESTIONS.filter(q => 
+                (domains.includes(q.domain) || (domains.includes('Core') && (q.domain === 'Numeracy' || q.domain === 'Literacy'))) &&
+                (q.grade >= Math.max(1, gradeNum - 2) && q.grade <= Math.min(12, gradeNum + 2)) &&
+                (q.skill === requiredSkill || q.subskill === requiredSkill || q.domain === requiredSkill) &&
+                (!usedQuestions.has(q.q))
+            );
 
-            // 2. Determine Target Difficulty (Adaptive part)
-            const recentAnswers = currentAnswers.slice(-5);
-            let correctCount = recentAnswers.filter(a => a.correct).length;
-            let targetDifficulty = "medium";
-            if (currentAnswers.length > 5) {
-                if (correctCount >= 4) { targetDifficulty = "hard"; } 
-                else if (correctCount <= 1) { targetDifficulty = "easy"; } 
-            }
+            // 2. Determine Target Difficulty (Adaptive part)
+            const recentAnswers = currentAnswers.slice(-5);
+            let correctCount = recentAnswers.filter(a => a.correct).length;
+            let targetDifficulty = "medium";
+            if (currentAnswers.length > 5) {
+                if (correctCount >= 4) { targetDifficulty = "hard"; } 
+                else if (correctCount <= 1) { targetDifficulty = "easy"; } 
+            }
 
-            // 3. Attempt to get a question matching the target difficulty
-            let availableQuestions = filteredPool.filter(q => q.difficulty === targetDifficulty);
-            
-            // 4. Fallback 1: If target difficulty fails, try any difficulty from the filtered pool
-            if (availableQuestions.length === 0 && filteredPool.length > 0) {
-                availableQuestions = filteredPool; 
-            }
-            
-            // 5. Select and mark as used
-            if (availableQuestions.length > 0) {
-                const randomIndex = Math.floor(Math.random() * availableQuestions.length);
-                const q = availableQuestions[randomIndex];
-                usedQuestions.add(q.q);
-                return q;
-            }
-            
-            // 6. Fallback 2: If the skill pool is exhausted, try any unused question from the domain
-            const generalFallback = ALL_QUESTIONS.filter(q => 
-                (domains.includes(q.domain) || (domains.includes('Core') && (q.domain === 'Numeracy' || q.domain === 'Literacy'))) && 
-                (!usedQuestions.has(q.q))
-            );
-            if (generalFallback.length > 0) {
-                 const q = generalFallback[Math.floor(Math.random() * generalFallback.length)];
-                 usedQuestions.add(q.q);
-                 return q;
-            }
+            // 3. Attempt to get a question matching the target difficulty
+            let availableQuestions = filteredPool.filter(q => q.difficulty === targetDifficulty);
+            
+            // 4. Fallback 1: If target difficulty fails, try any difficulty from the filtered pool
+            if (availableQuestions.length === 0 && filteredPool.length > 0) {
+                availableQuestions = filteredPool; 
+            }
+            
+            // 5. Select and mark as used
+            if (availableQuestions.length > 0) {
+                const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+                const q = availableQuestions[randomIndex];
+                usedQuestions.add(q.q);
+                return q;
+            }
+            
+            // 6. Fallback 2: If the skill pool is exhausted, try any unused question from the domain
+            const generalFallback = ALL_QUESTIONS.filter(q => 
+                (domains.includes(q.domain) || (domains.includes('Core') && (q.domain === 'Numeracy' || q.domain === 'Literacy'))) && 
+                (!usedQuestions.has(q.q))
+            );
+            if (generalFallback.length > 0) {
+                 const q = generalFallback[Math.floor(Math.random() * generalFallback.length)];
+                 usedQuestions.add(q.q);
+                 return q;
+            }
 
-            return null; 
-        }
+            return null; 
+        }
 
-        // --- Question Rendering (Index advancement handled here) ---
-        function renderQuestion(qData, formId, domain) {
-            const form = document.getElementById(formId);
-            state.currentQuiz = domain;
-            
-            // Advance index only if a question exists
-            if (domain === 'Core') { state.coreQIndex++; }
-            else if (domain === 'Aptitude') { state.aptQIndex++; }
-            else if (domain === 'Personality') { state.psychoQIndex++; }
-            
-            let currentQIndex = domain === 'Core' ? state.coreQIndex : domain === 'Aptitude' ? state.aptQIndex : state.psychoQIndex;
-            
-            const maxQ = domain === 'Core' ? state.maxCoreQ : domain === 'Aptitude' ? state.maxAptQ : state.maxPsychoQ;
-            const progressEl = document.getElementById(formId.replace('Form', '-progress'));
-            if(progressEl) progressEl.textContent = `(Q${currentQIndex}/${maxQ})`;
+        // --- Question Rendering (Index advancement handled here) ---
+        function renderQuestion(qData, formId, domain) {
+            const form = document.getElementById(formId);
+            state.currentQuiz = domain;
+            
+            // Advance index only if a question exists
+            if (domain === 'Core') { state.coreQIndex++; }
+            else if (domain === 'Aptitude') { state.aptQIndex++; }
+            else if (domain === 'Personality') { state.psychoQIndex++; }
+            
+            let currentQIndex = domain === 'Core' ? state.coreQIndex : domain === 'Aptitude' ? state.aptQIndex : state.psychoQIndex;
+            
+            const maxQ = domain === 'Core' ? state.maxCoreQ : domain === 'Aptitude' ? state.maxAptQ : state.maxPsychoQ;
+            const progressEl = document.getElementById(formId.replace('Form', '-progress'));
+            if(progressEl) progressEl.textContent = `(Q${currentQIndex}/${maxQ})`;
 
-            let qHTML = `<div class="question-box">
-                ${qData.passage ? `<p class="text-md italic text-gray-600 mb-4 border-l-4 border-yellow-500 pl-3">Passage: ${qData.passage}</p>` : ''}
-                <p class="text-xl font-semibold mb-4 text-gray-900">Q${currentQIndex}: ${qData.q}</p>
-                <div class="options-container space-y-2">`;
-            
-            qData.options.forEach((opt, i) => {
-                qHTML += `<label class="option-label">
-                    <input type="radio" name="answer" value="${i}" required> ${opt}
-                </label>`;
-            });
+            let qHTML = `<div class="question-box">
+                ${qData.passage ? `<p class="text-md italic text-gray-600 mb-4 border-l-4 border-yellow-500 pl-3">Passage: ${qData.passage}</p>` : ''}
+                <p class="text-xl font-semibold mb-4 text-gray-900">Q${currentQIndex}: ${qData.q}</p>
+                <div class="options-container space-y-2">`;
+            
+            qData.options.forEach((opt, i) => {
+                qHTML += `<label class="option-label">
+                    <input type="radio" name="answer" value="${i}" required> ${opt}
+                </label>`;
+            });
 
-            qHTML += `</div></div><button class="btn w-full mt-6" type="submit">Next Question</button>`;
-            form.innerHTML = qHTML;
+            qHTML += `</div></div><button class="btn w-full mt-6" type="submit">Next Question</button>`;
+            form.innerHTML = qHTML;
 
-            form.onsubmit = (ev) => processAnswer(ev, qData, formId, domain);
-        }
+            form.onsubmit = (ev) => processAnswer(ev, qData, formId, domain);
+        }
 
-        // --- Answer Processing and Flow Control ---
-        function processAnswer(ev, qData, formId, domain) {
-            ev.preventDefault();
-            const form = document.getElementById(formId);
-            const selectedRadio = form.querySelector('input[name="answer"]:checked');
-            
-            if (domain !== 'Personality') {
-                const isCorrect = parseInt(selectedRadio.value) === qData.a;
-                const currentAnswers = domain === 'Core' ? state.coreAnswers : state.aptAnswers;
-                currentAnswers.push({ correct: isCorrect, q: qData, picked: parseInt(selectedRadio.value) });
-                
-                const skillKey = qData.skill || 'Literacy (Verbal/Grammar)';
-                const score = state.skillScores[skillKey] || state.skillScores['Fundamental Numeracy'] || state.skillScores['Literacy (Verbal/Grammar)'];
-                if (score) {
-                    score.total++;
-                    if (isCorrect) score.correct++;
-                    else score.growthAreas.push(qData.subskill || qData.skill);
-                }
-            } else {
-                const selectedAnswer = parseInt(selectedRadio.value);
-                const trait = qData.traitMap[selectedAnswer];
-                const interest = qData.interest[selectedAnswer];
-                state.psychoAnswers.push({trait, interest});
-                state.traitCounts[trait] = (state.traitCounts[trait] || 0) + 1;
-                if (interest !== "N/A") state.traitCounts[interest] = (state.traitCounts[interest] || 0) + 1;
-            }
+        // --- Answer Processing and Flow Control ---
+        function processAnswer(ev, qData, formId, domain) {
+            ev.preventDefault();
+            const form = document.getElementById(formId);
+            const selectedRadio = form.querySelector('input[name="answer"]:checked');
+            
+            if (domain !== 'Personality') {
+                const isCorrect = parseInt(selectedRadio.value) === qData.a;
+                const currentAnswers = domain === 'Core' ? state.coreAnswers : state.aptAnswers;
+                currentAnswers.push({ correct: isCorrect, q: qData, picked: parseInt(selectedRadio.value) });
+                
+                const skillKey = qData.skill || 'Literacy (Verbal/Grammar)';
+                const score = state.skillScores[skillKey] || state.skillScores['Fundamental Numeracy'] || state.skillScores['Literacy (Verbal/Grammar)'];
+                if (score) {
+                    score.total++;
+                    if (isCorrect) score.correct++;
+                    else score.growthAreas.push(qData.subskill || qData.skill);
+                }
+            } else {
+                const selectedAnswer = parseInt(selectedRadio.value);
+                const trait = qData.traitMap[selectedAnswer];
+                const interest = qData.interest[selectedAnswer];
+                state.psychoAnswers.push({trait, interest});
+                state.traitCounts[trait] = (state.traitCounts[trait] || 0) + 1;
+                if (interest !== "N/A") state.traitCounts[interest] = (state.traitCounts[interest] || 0) + 1;
+            }
 
-            // Call the next test state using the UPDATED index
-            if (domain === 'Core') { runCoreTest(state.coreQIndex); }
-            else if (domain === 'Aptitude') { runAptitudeTest(state.aptQIndex); }
-            else if (domain === 'Personality') { runPersonalityTest(state.psychoQIndex); }
-        }
+            // Call the next test state using the UPDATED index
+            if (domain === 'Core') { runCoreTest(state.coreQIndex); }
+            else if (domain === 'Aptitude') { runAptitudeTest(state.aptQIndex); }
+            else if (domain === 'Personality') { runPersonalityTest(state.psychoQIndex); }
+        }
 
-        // Skill rotation list for core (Literacy/Numeracy/Comp) and aptitude (Problem Solving/Quant/Data)
-        const CORE_SKILLS = ['Fundamental Numeracy', 'Literacy (Verbal/Grammar)', 'Reading Comprehension', 'Fundamental Numeracy', 'Literacy (Verbal/Grammar)', 'Reading Comprehension'];
-        const APT_SKILLS = ['Problem Solving Aptitude', 'Quantitative Aptitude', 'Data Interpretation Aptitude', 'Problem Solving Aptitude', 'Quantitative Aptitude'];
+        // Skill rotation list for core (Literacy/Numeracy/Comp) and aptitude (Problem Solving/Quant/Data)
+        const CORE_SKILLS = ['Fundamental Numeracy', 'Literacy (Verbal/Grammar)', 'Reading Comprehension', 'Fundamental Numeracy', 'Literacy (Verbal/Grammar)', 'Reading Comprehension'];
+        const APT_SKILLS = ['Problem Solving Aptitude', 'Quantitative Aptitude', 'Data Interpretation Aptitude', 'Problem Solving Aptitude', 'Quantitative Aptitude'];
 
-        function runCoreTest(index) {
-            if (index >= state.maxCoreQ) return runAptitudeTest(0); 
+        function runCoreTest(index) {
+            if (index >= state.maxCoreQ) return runAptitudeTest(0); 
 
-            const skillKey = CORE_SKILLS[index % CORE_SKILLS.length];
-            const qData = getQuestionPool(['Literacy', 'Numeracy'], skillKey, student.grade, state.coreAnswers); 
-            
-            if (!qData) {
-                // Critical safety net: Skip to the next section if no question can be found
-                console.warn("Core question pool exhausted or no matching question found. Moving to Aptitude.");
-                return runAptitudeTest(0);
-            }
-            
-            showSection('section-core');
-            renderQuestion(qData, 'coreForm', 'Core');
-        }
+            const skillKey = CORE_SKILLS[index % CORE_SKILLS.length];
+            const qData = getQuestionPool(['Literacy', 'Numeracy'], skillKey, student.grade, state.coreAnswers); 
+            
+            if (!qData) {
+                // Critical safety net: Skip to the next section if no question can be found
+                console.warn("Core question pool exhausted or no matching question found. Moving to Aptitude.");
+                return runAptitudeTest(0);
+            }
+            
+            showSection('section-core');
+            renderQuestion(qData, 'coreForm', 'Core');
+        }
 
-        function runAptitudeTest(index) {
-            if (index >= state.maxAptQ) return runPersonalityTest(0); 
-            
-            const skillKey = APT_SKILLS[index % APT_SKILLS.length];
-            const qData = getQuestionPool(['Aptitude'], skillKey, student.grade, state.aptAnswers);
-            
-            if (!qData) {
-                console.warn("Aptitude question pool exhausted. Moving to Personality.");
-                return runPersonalityTest(0);
-            }
-            
-            showSection('section-aptitude');
-            renderQuestion(qData, 'aptitudeForm', 'Aptitude');
-        }
-        
-        function runPersonalityTest(index) {
-            if (index >= state.maxPsychoQ) {
-                stopTimer();
-                return showReport();
-            }
+        function runAptitudeTest(index) {
+            if (index >= state.maxAptQ) return runPersonalityTest(0); 
+            
+            const skillKey = APT_SKILLS[index % APT_SKILLS.length];
+            const qData = getQuestionPool(['Aptitude'], skillKey, student.grade, state.aptAnswers);
+            
+            if (!qData) {
+                console.warn("Aptitude question pool exhausted. Moving to Personality.");
+                return runPersonalityTest(0);
+            }
+            
+            showSection('section-aptitude');
+            renderQuestion(qData, 'aptitudeForm', 'Aptitude');
+        }
+        
+        function runPersonalityTest(index) {
+            if (index >= state.maxPsychoQ) {
+                stopTimer();
+                return showReport();
+            }
 
-            // Personality questions are generally not adaptive by difficulty, so we use sequential selection
-            const personalityPool = ALL_QUESTIONS.filter(q => q.domain === 'Personality');
-            const qData = personalityPool[index % personalityPool.length]; 
-            
-            if (!qData) {
-                console.warn("Personality question pool exhausted. Moving to Report.");
-                stopTimer();
-                return showReport();
-            }
+            // Personality questions are generally not adaptive by difficulty, so we use sequential selection
+            const personalityPool = ALL_QUESTIONS.filter(q => q.domain === 'Personality');
+            const qData = personalityPool[index % personalityPool.length]; 
+            
+            if (!qData) {
+                console.warn("Personality question pool exhausted. Moving to Report.");
+                stopTimer();
+                return showReport();
+            }
 
-            showSection('section-personality');
-            renderQuestion(qData, 'personalityForm', 'Personality');
-        }
-        
-        // --- Event Listeners (To start the process) ---
-        document.getElementById("startAssessment").onclick = () => { showSection("section-profile"); };
-        document.getElementById('profileForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            student.name = this.elements.name.value;
-            student.age = parseInt(this.elements.age.value);
-            student.grade = parseInt(this.elements.grade.value);
-            
-            // Reset state for new assessment (important if restarting)
-            Object.assign(state, {
-                coreQIndex: 0, aptQIndex: 0, psychoQIndex: 0,
-                coreAnswers: [], aptAnswers: [], psychoAnswers: [],
-                traitCounts: {},
-            });
-            usedQuestions.clear(); 
-            
-            startTimer();
-            runCoreTest(0); // Start the core test flow
-        });
+            showSection('section-personality');
+            renderQuestion(qData, 'personalityForm', 'Personality');
+        }
+        
+        // --- Event Listeners (To start the process) ---
+        document.getElementById("startAssessment").onclick = () => { showSection("section-profile"); };
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            student.name = this.elements.name.value;
+            student.age = parseInt(this.elements.age.value);
+            student.grade = parseInt(this.elements.grade.value);
+            
+            // Reset state for new assessment (important if restarting)
+            Object.assign(state, {
+                coreQIndex: 0, aptQIndex: 0, psychoQIndex: 0,
+                coreAnswers: [], aptAnswers: [], psychoAnswers: [],
+                traitCounts: {},
+            });
+            usedQuestions.clear(); 
+            
+            startTimer();
+            runCoreTest(0); // Start the core test flow
+        });
 
 
-        // --- Report Generation Logic ---
-        function generateScoreHTML(skillKey, score) {
-            if (score.total === 0) return ''; 
-            const percent = Math.round((score.correct / score.total) * 100);
-            const color = percent >= 80 ? 'text-green-600' : percent >= 60 ? 'text-yellow-600' : 'text-red-600';
-            const bg = percent >= 80 ? 'bg-green-50' : percent >= 60 ? 'bg-yellow-50' : 'bg-red-50';
-            
-            const uniqueGrowthAreas = [...new Set(score.growthAreas)].filter(a => a !== 'Literacy (Verbal/Grammar)' && a !== 'Fundamental Numeracy');
+        // --- Report Generation Logic ---
+        function generateScoreHTML(skillKey, score) {
+            if (score.total === 0) return ''; 
+            const percent = Math.round((score.correct / score.total) * 100);
+            const color = percent >= 80 ? 'text-green-600' : percent >= 60 ? 'text-yellow-600' : 'text-red-600';
+            const bg = percent >= 80 ? 'bg-green-50' : percent >= 60 ? 'bg-yellow-50' : 'bg-red-50';
+            
+            const uniqueGrowthAreas = [...new Set(score.growthAreas)].filter(a => a !== 'Literacy (Verbal/Grammar)' && a !== 'Fundamental Numeracy');
 
-            return `
-                <div class="p-4 border-l-4 rounded-lg shadow-sm ${bg} border-l-blue-600">
-                    <p class="text-lg font-semibold text-gray-800">${skillKey}</p>
-                    <div class="flex justify-between items-center mt-1">
-                        <p class="text-3xl font-extrabold ${color}">${percent}%</p>
-                        <p class="text-sm text-gray-600">${score.correct}/${score.total} Correct</p>
-                    </div>
-                    <p class="text-xs mt-2 text-gray-700 italic">Growth Focus: ${uniqueGrowthAreas.length > 0 ? uniqueGrowthAreas.slice(0, 3).join(', ') : 'Strong foundational skills.'}</p>
-                </div>
-            `;
-        }
+            return `
+                <div class="p-4 border-l-4 rounded-lg shadow-sm ${bg} border-l-blue-600">
+                    <p class="text-lg font-semibold text-gray-800">${skillKey}</p>
+                    <div class="flex justify-between items-center mt-1">
+                        <p class="text-3xl font-extrabold ${color}">${percent}%</p>
+                        <p class="text-sm text-gray-600">${score.correct}/${score.total} Correct</p>
+                    </div>
+                    <p class="text-xs mt-2 text-gray-700 italic">Growth Focus: ${uniqueGrowthAreas.length > 0 ? uniqueGrowthAreas.slice(0, 3).join(', ') : 'Strong foundational skills.'}</p>
+                </div>
+            `;
+        }
 
-        function getProfileInsight(topTrait) {
-            if (topTrait.includes('Analytical') || topTrait.includes('STEM')) return { title: "Analytical Thinker 🧠", detail: "Thrives with logic, data, and structured problem-solving. Potential in STEM/Finance." };
-            if (topTrait.includes('Creative') || topTrait.includes('Visual')) return { title: "Creative Innovator 🎨", detail: "Driven by imagination and unique solutions. Potential in Design/Arts/Media." };
-            if (topTrait.includes('Social') || topTrait.includes('Verbal') || topTrait.includes('Linguistic')) return { title: "Social/Linguistic Communicator 💬", detail: "Excels in interaction, empathy, and expression. Potential in HR/Teaching/Law." };
-            if (topTrait.includes('Kinesthetic') || topTrait.includes('Active')) return { title: "Active/Hands-on Learner 💪", detail: "Learns by doing and physical engagement. Potential in Engineering/Trades/Sports." };
-            if (topTrait.includes('Organized') || topTrait.includes('Conscientious')) return { title: "Conscientious Planner 📋", detail: "Values structure, reliability, and precision. Potential in Management/Operations." };
-            return { title: "Versatile Explorer", detail: "Shows flexibility across domains. Continue exploration." };
-        }
+        function getProfileInsight(topTrait) {
+            if (topTrait.includes('Analytical') || topTrait.includes('STEM')) return { title: "Analytical Thinker 🧠", detail: "Thrives with logic, data, and structured problem-solving. Potential in STEM/Finance." };
+            if (topTrait.includes('Creative') || topTrait.includes('Visual')) return { title: "Creative Innovator 🎨", detail: "Driven by imagination and unique solutions. Potential in Design/Arts/Media." };
+            if (topTrait.includes('Social') || topTrait.includes('Verbal') || topTrait.includes('Linguistic')) return { title: "Social/Linguistic Communicator 💬", detail: "Excels in interaction, empathy, and expression. Potential in HR/Teaching/Law." };
+            if (topTrait.includes('Kinesthetic') || topTrait.includes('Active')) return { title: "Active/Hands-on Learner 💪", detail: "Learns by doing and physical engagement. Potential in Engineering/Trades/Sports." };
+            if (topTrait.includes('Organized') || topTrait.includes('Conscientious')) return { title: "Conscientious Planner 📋", detail: "Values structure, reliability, and precision. Potential in Management/Operations." };
+            return { title: "Versatile Explorer", detail: "Shows flexibility across domains. Continue exploration." };
+        }
 
-        function showReport() {
-            showSection('section-report');
-            const minutes = Math.floor(timer / 60), seconds = timer % 60;
-            
-            let sortedTraits = Object.entries(state.traitCounts).sort((a, b) => b[1] - a[1]);
-            const topTraits = sortedTraits.slice(0, 3).map(([trait]) => trait);
-            const topTrait = topTraits[0] || "Versatile";
-            const profileInsight = getProfileInsight(topTrait);
-            
-            let skillHTML = Object.keys(state.skillScores).map(key => generateScoreHTML(key, state.skillScores[key])).join('');
-            
-            const totalQs = state.maxCoreQ + state.maxAptQ;
-            const totalCorrect = state.coreAnswers.filter(a => a.correct).length + state.aptAnswers.filter(a => a.correct).length;
-            const overallScore = ((totalCorrect / totalQs) * 100).toFixed(1);
+        function showReport() {
+            showSection('section-report');
+            const minutes = Math.floor(timer / 60), seconds = timer % 60;
+            
+            let sortedTraits = Object.entries(state.traitCounts).sort((a, b) => b[1] - a[1]);
+            const topTraits = sortedTraits.slice(0, 3).map(([trait]) => trait);
+            const topTrait = topTraits[0] || "Versatile";
+            const profileInsight = getProfileInsight(topTrait);
+            
+            let skillHTML = Object.keys(state.skillScores).map(key => generateScoreHTML(key, state.skillScores[key])).join('');
+            
+            const totalQs = state.maxCoreQ + state.maxAptQ;
+            const totalCorrect = state.coreAnswers.filter(a => a.correct).length + state.aptAnswers.filter(a => a.correct).length;
+            const overallScore = ((totalCorrect / totalQs) * 100).toFixed(1);
 
-            document.getElementById("reportContent").innerHTML = `
-                <div class="p-6 bg-blue-50 border-l-8 border-blue-600 mb-6 rounded-xl shadow-md">
-                    <h3 class="text-2xl font-bold text-blue-800 mb-2">${student.name}'s Diagnostic Summary</h3>
-                    <p class="text-md"><b>Grade:</b> ${student.grade} | <b>Age:</b> ${student.age}</p>
-                    <p class="font-bold text-gray-700 mt-2">Overall Score: <span class="text-purple-700 text-xl">${overallScore}%</span> | Total Time: <span class="text-purple-700">${minutes}m ${seconds.toString().padStart(2,"0")}s</span></p>
-                </div>
+            document.getElementById("reportContent").innerHTML = `
+                <div class="p-6 bg-blue-50 border-l-8 border-blue-600 mb-6 rounded-xl shadow-md">
+                    <h3 class="text-2xl font-bold text-blue-800 mb-2">${student.name}'s Diagnostic Summary</h3>
+                    <p class="text-md"><b>Grade:</b> ${student.grade} | <b>Age:</b> ${student.age}</p>
+                    <p class="font-bold text-gray-700 mt-2">Overall Score: <span class="text-purple-700 text-xl">${overallScore}%</span> | Total Time: <span class="text-purple-700">${minutes}m ${seconds.toString().padStart(2,"0")}s</span></p>
+                </div>
 
-                <h3 class="report-section-title text-2xl">Cognitive Profile & Interests</h3>
-                <div class="p-4 my-4 bg-yellow-50 border-l-4 border-yellow-500 rounded-lg">
-                    <p class="text-xl font-bold mb-2">${profileInsight.title}</p>
-                    <p class="text-base text-gray-700">${profileInsight.detail}</p>
-                    <p class="text-sm mt-2 font-medium">Top Traits: ${topTraits.join(', ')}</p>
-                </div>
+                <h3 class="report-section-title text-2xl">Cognitive Profile & Interests</h3>
+                <div class="p-4 my-4 bg-yellow-50 border-l-4 border-yellow-500 rounded-lg">
+                    <p class="text-xl font-bold mb-2">${profileInsight.title}</p>
+                    <p class="text-base text-gray-700">${profileInsight.detail}</p>
+                    <p class="text-sm mt-2 font-medium">Top Traits: ${topTraits.join(', ')}</p>
+                </div>
 
-                <h3 class="report-section-title text-2xl">Skill Mastery Breakdown</h3>
-                <div class="grid md:grid-cols-2 gap-4 mt-4">
-                    ${skillHTML}
-                </div>
-            `;
-        }
-        
-        // --- FINAL EXPORT & SHARING FUNCTIONS (With User's WhatsApp Link) ---
-        window.downloadPDF = function() {
-            const { jsPDF } = window.jspdf;
-            const reportElement = document.getElementById('section-report');
-            const reportContent = document.getElementById('reportContent');
+                <h3 class="report-section-title text-2xl">Skill Mastery Breakdown</h3>
+                <div class="grid md:grid-cols-2 gap-4 mt-4">
+                    ${skillHTML}
+                </div>
+            `;
+        }
+        
+        // --- FINAL EXPORT & SHARING FUNCTIONS (With User's WhatsApp Link) ---
+        window.downloadPDF = function() {
+            const { jsPDF } = window.jspdf;
+            const reportElement = document.getElementById('section-report');
+            const reportContent = document.getElementById('reportContent');
 
-            // Temporarily hide buttons for clean PDF capture
-            const buttonsContainer = reportElement.querySelector('.flex.flex-col');
-            if (buttonsContainer) buttonsContainer.style.display = 'none';
-            
-            html2canvas(reportContent, { scale: 3, useCORS: true }).then(canvas => {
-                const imgData = canvas.toDataURL('image/png');
-                const pdf = new jsPDF('p', 'mm', 'a4');
-                const imgProps= pdf.getImageProperties(imgData);
-                const pdfWidth = pdf.internal.pageSize.getWidth();
-                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-                
-                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-                pdf.save(`FutureMeter_Report_${student.name.replace(/\s/g, '_')}.pdf`);
-            }).finally(() => {
-                // Restore buttons
-                if (buttonsContainer) buttonsContainer.style.display = 'flex';
-            });
-        }
+            // Temporarily hide buttons for clean PDF capture
+            const buttonsContainer = reportElement.querySelector('.flex.flex-col');
+            if (buttonsContainer) buttonsContainer.style.display = 'none';
+            
+            html2canvas(reportContent, { scale: 3, useCORS: true }).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgProps= pdf.getImageProperties(imgData);
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+                
+                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                pdf.save(`FutureMeter_Report_${student.name.replace(/\s/g, '_')}.pdf`);
+            }).finally(() => {
+                // Restore buttons
+                if (buttonsContainer) buttonsContainer.style.display = 'flex';
+            });
+        }
 
-        window.shareOnWhatsApp = function() {
-            let sortedTraits = Object.entries(state.traitCounts).sort((a, b) => b[1] - a[1]);
-            const topTrait = sortedTraits[0] ? sortedTraits[0][0] : "Versatile";
-            
-            const totalQs = state.maxCoreQ + state.maxAptQ;
-            const totalCorrect = state.coreAnswers.filter(a => a.correct).length + state.aptAnswers.filter(a => a.correct).length;
-            const overallScore = ((totalCorrect / totalQs) * 100).toFixed(1);
-            
-            const message = `*🌟 SMART FutureMeter Report Summary*
+        window.shareOnWhatsApp = function() {
+            let sortedTraits = Object.entries(state.traitCounts).sort((a, b) => b[1] - a[1]);
+            const topTrait = sortedTraits[0] ? sortedTraits[0][0] : "Versatile";
+            
+            const totalQs = state.maxCoreQ + state.maxAptQ;
+            const totalCorrect = state.coreAnswers.filter(a => a.correct).length + state.aptAnswers.filter(a => a.correct).length;
+            const overallScore = ((totalCorrect / totalQs) * 100).toFixed(1);
+            
+            const message = `*🌟 SMART FutureMeter Report Summary*
 *Student:* ${student.name} (Grade ${student.grade})
 *Overall Score:* ${overallScore}%
 *Top Trait:* ${topTrait}
@@ -578,14 +578,14 @@
 Tap the link to discuss the full PDF report and next steps:
 https://wa.me/message/ZLLRTZRGV76IB1`;
 
-            const encodedMessage = encodeURIComponent(message);
-            // Uses the specific URL provided by the user
-            const whatsappURL = `https://api.whatsapp.com/send?text=${encodedMessage}`;
-            
-            window.open(whatsappURL, '_blank');
-        }
+            const encodedMessage = encodeURIComponent(message);
+            // Uses the specific URL provided by the user
+            const whatsappURL = `https://api.whatsapp.com/send?text=${encodedMessage}`;
+            
+            window.open(whatsappURL, '_blank');
+        }
 
-    </script>
+    </script>
 </body>
 
 </html>
